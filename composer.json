@@ -1,0 +1,12 @@
+{
+  "name": "seliton/client",
+  "require": {},
+  "require-dev": {
+      "phpunit/phpunit": "*"
+  },
+  "autoload": {
+      "psr-4": {
+	  "Seliton\\Client\\": "lib"
+      }
+  }
+}

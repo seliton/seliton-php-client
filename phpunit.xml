@@ -1,0 +1,7 @@
+<phpunit colors="true">
+  <testsuites>
+    <testsuite name="Seliton Client Test Suite">
+      <directory suffix="TestCase.php">tests</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>
