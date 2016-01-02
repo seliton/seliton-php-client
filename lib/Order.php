@@ -85,6 +85,8 @@ class Order extends Resource {
 		'customerCurrencyTotal',
 		'discountFreeShipping',
 		'terms',
+		'items',
+		'totalLines',
 	);
 	protected static $externalFields = array (
 		'customerID',
@@ -92,4 +94,70 @@ class Order extends Resource {
 		'paymentModuleID',
 		'checkoutModuleID',
 	);
+
+	protected function convertField($name, $value)
+	{
+		if ($name == 'items') {
+			$items = array ();
+			foreach ($value as $item) {
+				$items[] = array (
+					'orderItemID' => $item->orderItemID,
+					'orderID' => $item->orderID,
+					'parentOrderItemID' => $item->parentOrderItemID,
+					'productID' => $item->productID,
+					'productVariantID' => $item->productVariantID,
+					'productImageID' => $item->productImageID,
+					'orderItemProductCode' => $item->orderItemProductCode,
+					'orderItemProductName' => $item->orderItemProductName,
+					'orderItemCustomerLanguageProductName' => $item->orderItemCustomerLanguageProductName,
+					'orderItemCategoryName' => $item->orderItemCategoryName,
+					'orderItemCustomerLanguageCategoryName' => $item->orderItemCustomerLanguageCategoryName,
+					'orderItemBrandName' => $item->orderItemBrandName,
+					'orderItemCustomerLanguageBrandName' => $item->orderItemCustomerLanguageBrandName,
+					'orderItemQty' => $item->orderItemQty,
+					'orderItemDiscount' => $item->orderItemDiscount,
+					'orderItemPrice' => $item->orderItemPrice,
+					'orderItemDistributorPrice' => $item->orderItemDistributorPrice,
+					'orderItemTotal' => $item->orderItemTotal,
+					'orderItemTaxesAmount' => $item->orderItemTaxesAmount,
+					'orderItemTaxesRate' => $item->orderItemTaxesRate,
+					'orderItemCustomerCurrencyDiscount' => $item->orderItemCustomerCurrencyDiscount,
+					'orderItemCustomerCurrencyPrice' => $item->orderItemCustomerCurrencyPrice,
+					'orderItemCustomerCurrencyTotal' => $item->orderItemCustomerCurrencyTotal,
+					'orderItemCustomerCurrencyTaxesAmount' => $item->orderItemCustomerCurrencyTaxesAmount,
+					'orderItemBonusPointsSpent' => $item->orderItemBonusPointsSpent,
+					'shippingModuleID' => $item->shippingModuleID,
+					'orderItemShippingMethodCode' => $item->orderItemShippingMethodCode,
+					'orderItemShippingModuleName' => $item->orderItemShippingModuleName,
+					'orderItemCustomerLanguageShippingModuleName' => $item->orderItemCustomerLanguageShippingModuleName,
+					'orderItemShippingMethodName' => $item->orderItemShippingMethodName,
+					'orderItemCustomerLanguageShippingMethodName' => $item->orderItemCustomerLanguageShippingMethodName,
+					'vendorID' => $item->vendorID,
+					'orderItemVendorName' => $item->orderItemVendorName,
+					'vendorOrderID' => $item->vendorOrderID,
+					'vendorOrderCreateTimestamp' => $item->vendorOrderCreateTimestamp,
+					'orderItemOriginalProductCode' => $item->orderItemOriginalProductCode,
+				);
+			}
+			return $items;
+		}
+		if ($name == 'totalLines') {
+			$totalLines = array ();
+			foreach ($value as $totalLine) {
+				$totalLines[] = array (
+					'orderTotalLineID' => $totalLine->orderTotalLineID,
+					'orderID' => $totalLine->orderID,
+					'orderTotalLineType' => $totalLine->orderTotalLineType,
+					'orderTotalLineName' => $totalLine->orderTotalLineName,
+					'orderTotalLineCustomerLanguageName' => $totalLine->orderTotalLineCustomerLanguageName,
+					'orderTotalLineAmount' => $totalLine->orderTotalLineAmount,
+					'orderTotalLineCustomerCurrencyAmount' => $totalLine->orderTotalLineCustomerCurrencyAmount,
+					'orderTotalLineSort' => $totalLine->orderTotalLineSort,
+					
+				);
+			}
+			return $totalLines;
+		}
+		return parent::convertField($name, $value);
+	}
 }

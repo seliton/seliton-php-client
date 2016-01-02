@@ -10,6 +10,10 @@ class OrderTestCase extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals('Flat Rate', $orderRetrieved->shippingModuleName);
 		$this->assertEquals('Collect on delivery', $orderRetrieved->paymentModuleName);
+
+		$this->assertEquals('49.99', $orderRetrieved->items[0]['orderItemTotal']);
+
+		$this->assertEquals('Доставка', $orderRetrieved->totalLines[1]['orderTotalLineName']);
 	}
 
 	public function testAll()
