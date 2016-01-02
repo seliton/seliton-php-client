@@ -20,6 +20,7 @@ class Product extends Resource {
 		'nameXHTML',
 		'descriptionXHTML',
 		'detailedDescriptionXHTML',
+		'categories',
 		'homePageFeatured',
 		'homePageFeaturedFromCategory',
 		'price',
@@ -36,6 +37,18 @@ class Product extends Resource {
 		'brandID',
 		'availabilityLabelID',
 	);
+
+	protected function convertField($name, $value)
+	{
+		if ($name == 'categories') {
+			$categories = array ();
+			foreach ($value as $category) {
+				$categories[] = array ('categoryID' => $category->categoryID);
+			}
+			return $categories;
+		}
+		return parent::convertField($name, $value);
+	}
 }
 
 class ProductAvailabilityStatus {

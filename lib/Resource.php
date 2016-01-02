@@ -14,7 +14,7 @@ class Resource {
 		foreach (self::fields() as $field) {
 			$paramsField = self::field($field);
 			if (property_exists($params, $paramsField)) {
-				$this->$field = $params->$paramsField;
+				$this->$field = $this->convertField($field, $params->$paramsField);
 			}
 		}
 		foreach (static::$externalFields as $field) {
@@ -114,5 +114,10 @@ class Resource {
 		}
 
 		return self::name().ucfirst($name);
+	}
+
+	protected function convertField($name, $value)
+	{
+		return $value;
 	}
 }

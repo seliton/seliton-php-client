@@ -30,7 +30,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$nameXHTML = false;
 		$descriptionXHTML = false;
 		$detailedDescriptionXHTML = false;
-		$categoryID = 4;
+		$categories = array (array ('categoryID' => 4));
 		$homePageFeatured = false;
 		$homePageFeaturedFromCategory = false;
 		$price = 500;
@@ -59,7 +59,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 				'productNameXHTML' => $nameXHTML,
 				'productDescriptionXHTML' => $descriptionXHTML,
 				'productDetailedDescriptionXHTML' => $detailedDescriptionXHTML,
-				'categoryID' => $categoryID,
+				'productCategories' => $categories,
 				'productHomePageFeatured' => $homePageFeatured,
 				'productHomePageFeaturedFromCategory' => $homePageFeaturedFromCategory,
 				'productPrice' => $price,
@@ -95,6 +95,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			'nameXHTML',
 			'descriptionXHTML',
 			'detailedDescriptionXHTML',
+			'categories',
 			'homePageFeatured',
 			'homePageFeaturedFromCategory',
 			'price',
@@ -114,13 +115,13 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$name = 'Test';
 		$code = 'test';
-		$categoryID = 4;
+		$categories = array (array ('categoryID' => 4));
 
 		$product = Product::create(
 			array (
 				'productName' => array ('en' => $name),
 				'productCode' => $code,
-				'categoryID' => $categoryID,
+				'productCategories' => $categories,
 			)
 		);
 
@@ -134,13 +135,13 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$name = 'Test';
 		$code = 'test';
-		$categoryID = 4;
+		$categories = array (array ('categoryID' => 4));
 
 		$product = Product::create(
 			array (
 				'productName' => array ('en' => $name),
 				'productCode' => $code,
-				'categoryID' => $categoryID,
+				'productCategories' => $categories,
 			)
 		);
 
@@ -157,13 +158,13 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$name = 'Test';
 		$code = 'test';
-		$categoryID = 4;
+		$categories = array (array ('categoryID' => 4));
 
 		$product = Product::create(
 			array (
 				'productName' => array ('en' => $name),
 				'productCode' => $code,
-				'categoryID' => $categoryID,
+				'productCategories' => $categories,
 			)
 		);
 
@@ -181,7 +182,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 				array (
 					'productName' => array ('en' => "Test $i"),
 					'productCode' => "test_$i",
-					'categoryID' => 4,
+					'productCategories' => array (array ('categoryID' => 4)),
 				)
 			);
 		}
