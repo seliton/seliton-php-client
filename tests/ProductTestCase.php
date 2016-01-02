@@ -30,7 +30,10 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$nameXHTML = false;
 		$descriptionXHTML = false;
 		$detailedDescriptionXHTML = false;
-		$categories = array (array ('categoryID' => 4));
+		$categories = array (
+			array ('categoryID' => 4),
+			array ('categoryID' => 2)
+		);
 		$homePageFeatured = false;
 		$homePageFeaturedFromCategory = false;
 		$price = 500;
@@ -135,7 +138,10 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$name = 'Test';
 		$code = 'test';
-		$categories = array (array ('categoryID' => 4));
+		$categories = array (
+			array ('categoryID' => 4),
+			array ('categoryID' => 2)
+		);
 
 		$product = Product::create(
 			array (
@@ -147,11 +153,16 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 
 		$productRetrieved = Product::retrieve($product->id);
 		$productRetrieved->code = 'test_save';
+		$productRetrieved->categories = array (
+			array ('categoryID' => 1),
+			array ('categoryID' => 3)
+		);
 		$productRetrieved->save();
 
 		$productSaved = Product::retrieve($productRetrieved->id);
 
 		$this->assertEquals($productRetrieved->code, $productSaved->code);
+		$this->assertEquals($productRetrieved->categories, $productSaved->categories);
 	}
 
 	public function testDelete()
