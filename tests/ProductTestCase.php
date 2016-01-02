@@ -44,7 +44,17 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$bonusPointsPrice = null;
 		$isNew = false;
 		$featuredStyle = ProductFeaturedStyle::NORMAL;
-		
+		$images = array (
+			array (
+				'productImage' => 'image_1.jpg',
+				'productImageFeaturedStyle' => ProductFeaturedStyle::NORMAL
+			),
+			array (
+				'productImage' => 'image_2.jpg',
+				'productImageFeaturedStyle' => ProductFeaturedStyle::DOUBLE_WIDTH
+			),
+		);
+
 		$product = Product::create(
 			array (
 				'productName' => $name,
@@ -73,6 +83,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 				'productBonusPointsPrice' => $bonusPointsPrice,
 				'productIsNew' => $isNew,
 				'productFeaturedStyle' => $featuredStyle,
+				'productImages' => $images,
 			)
 		);
 
@@ -112,6 +123,18 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			) as $field) {
 			$this->assertEquals($$field, $product->$field);
 		}
+
+		for ($i = 0; $i < count($images); $i++) {
+			$productImage = $product->images[$i];
+			$this->assertEquals(
+				$images[$i]['productImage'],
+				$productImage['productImage']
+			);
+			$this->assertEquals(
+				$images[$i]['productImageFeaturedStyle'],
+				$productImage['productImageFeaturedStyle']
+			);
+		}
 	}
 
 	public function testRetrieve()
@@ -142,12 +165,23 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			array ('categoryID' => 4),
 			array ('categoryID' => 2)
 		);
+		$images = array (
+			array (
+				'productImage' => 'image_1.jpg',
+				'productImageFeaturedStyle' => ProductFeaturedStyle::NORMAL
+			),
+			array (
+				'productImage' => 'image_2.jpg',
+				'productImageFeaturedStyle' => ProductFeaturedStyle::NORMAL
+			),
+		);
 
 		$product = Product::create(
 			array (
 				'productName' => array ('en' => $name),
 				'productCode' => $code,
 				'productCategories' => $categories,
+				'productImages' => $images,
 			)
 		);
 
@@ -157,12 +191,33 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			array ('categoryID' => 1),
 			array ('categoryID' => 3)
 		);
+		$productRetrieved->images = array (
+			array (
+				'productImage' => 'updated_image_1.jpg',
+				'productImageFeaturedStyle' => ProductFeaturedStyle::DOUBLE_WIDTH
+			),
+			array (
+				'productImage' => 'updated_image_2.jpg',
+				'productImageFeaturedStyle' => ProductFeaturedStyle::DOUBLE_WIDTH
+			),
+		);
 		$productRetrieved->save();
 
 		$productSaved = Product::retrieve($productRetrieved->id);
 
 		$this->assertEquals($productRetrieved->code, $productSaved->code);
 		$this->assertEquals($productRetrieved->categories, $productSaved->categories);
+		for ($i = 0; $i < count($productRetrieved->images); $i++) {
+			$productSavedImage = $productSaved->images[$i];
+			$this->assertEquals(
+				$productRetrieved->images[$i]['productImage'],
+				$productSavedImage['productImage']
+			);
+			$this->assertEquals(
+				$productRetrieved->images[$i]['productImageFeaturedStyle'],
+				$productSavedImage['productImageFeaturedStyle']
+			);
+		}
 	}
 
 	public function testDelete()

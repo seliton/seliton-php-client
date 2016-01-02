@@ -32,6 +32,7 @@ class Product extends Resource {
 		'bonusPointsPrice',
 		'isNew',
 		'featuredStyle',
+		'images',
 	);
 	protected static $externalFields = array (
 		'brandID',
@@ -46,6 +47,21 @@ class Product extends Resource {
 				$categories[] = array ('categoryID' => $category->categoryID);
 			}
 			return $categories;
+		}
+		if ($name == 'images') {
+			$images = array ();
+			foreach ($value as $image) {
+				$images[] = array (
+					'productImageID' => $image->productImageID,
+					'productImage' => $image->productImage,
+					'productImageWidth' => $image->productImageWidth,
+					'productImageHeight' => $image->productImageHeight,
+					'productImageSize' => $image->productImageSize,
+					'productImageSort' => $image->productImageSort,
+					'productImageFeaturedStyle' => $image->productImageFeaturedStyle,
+				);
+			}
+			return $images;
 		}
 		return parent::convertField($name, $value);
 	}
