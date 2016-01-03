@@ -16,4 +16,9 @@ class Page extends Resource {
 		'updateTimestamp',
 		'isActive',
 	);
+	protected static $fieldsToRest = array (
+		'seoTitle' => 'SEOTitle',
+		'seoKeywords' => 'SEOKeywords',
+		'seoDescription' => 'SEODescription',
+	);
 }

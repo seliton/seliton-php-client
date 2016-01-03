@@ -19,4 +19,9 @@ class Brand extends Resource {
 		'productCount',
 		'sort',
 	);
+	protected static $fieldsToRest = array (
+		'seoTitle' => 'SEOTitle',
+		'seoKeywords' => 'SEOKeywords',
+		'seoDescription' => 'SEODescription',
+	);
 }

@@ -36,4 +36,9 @@ class Category extends Resource {
 		'iconImageHeight',
 		'sort',
 	);
+	protected static $fieldsToRest = array (
+		'seoTitle' => 'SEOTitle',
+		'seoKeywords' => 'SEOKeywords',
+		'seoDescription' => 'SEODescription',
+	);
 }

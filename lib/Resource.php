@@ -7,6 +7,7 @@ class Resource {
 	protected static $namePlural;
 	protected static $fields;
 	protected static $externalFields = array ();
+	protected static $fieldsToRest = array ();
 
 	protected static $apiUrl = 'http://dev-1.myseliton.com/api/v1/';
 
@@ -113,8 +114,8 @@ class Resource {
 
 	protected static function field($name)
 	{
-		if (substr($name, 0, 3) == 'seo') {
-			return self::name().'SEO'.substr($name, 3);
+		if (isset(static::$fieldsToRest[$name])) {
+			return self::name().static::$fieldsToRest[$name];
 		}
 
 		return self::name().ucfirst($name);
