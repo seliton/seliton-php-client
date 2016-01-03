@@ -8,7 +8,7 @@ class Resource {
 	protected static $fields;
 	protected static $externalFields = array ();
 
-	private static $apiUrl = 'http://dev-1.myseliton.com/api/v1/';
+	protected static $apiUrl = 'http://dev-1.myseliton.com/api/v1/';
 
 	public function __construct($params) {
 		foreach (self::fields() as $field) {
@@ -77,37 +77,37 @@ class Resource {
 		HttpClient::delete(self::apiUrl($this->id));
 	}
 
-	private static function apiUrl($path = '')
+	protected static function apiUrl($path = '')
 	{
 		return self::$apiUrl.self::namePlural()."/$path";
 	}
 
-	private static function name()
+	protected static function name()
 	{
 		return static::$_name;
 	}
 
-	private static function nameFirstUpper()
+	protected static function nameFirstUpper()
 	{
 		return ucfirst(self::name());
 	}
 
-	private static function className()
+	protected static function className()
 	{
 		return '\\Seliton\\Client\\'.self::nameFirstUpper();
 	}
 
-	private static function namePlural()
+	protected static function namePlural()
 	{
 		return static::$namePlural;
 	}
 
-	private static function fields()
+	protected static function fields()
 	{
 		return static::$fields;
 	}
 
-	private static function field($name)
+	protected static function field($name)
 	{
 		if (substr($name, 0, 3) == 'seo') {
 			return self::name().'SEO'.substr($name, 3);

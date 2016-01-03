@@ -23,7 +23,7 @@ class HttpClient {
 		self::request($url, HttpMethod::DELETE);
 	}
 
-	private static function request($url, $method, $params = null)
+	protected static function request($url, $method, $params = null)
 	{
 		if ($method == HttpMethod::GET && !is_null($params)) {
 			$url = self::appendUrlEncodedParams($url, $params);
@@ -33,7 +33,7 @@ class HttpClient {
 		return $jsonDecoded;
 	}
 
-	private static function appendUrlEncodedParams($url, $params)
+	protected static function appendUrlEncodedParams($url, $params)
 	{
 		$url .= '?';
 		foreach ($params as $key => $value) {
@@ -42,7 +42,7 @@ class HttpClient {
 		return substr($url, 0, -1);
 	}
 
-	private static function curlExec($url, $method, $params)
+	protected static function curlExec($url, $method, $params)
 	{
 		$curl = curl_init($url);
 		switch ($method)
