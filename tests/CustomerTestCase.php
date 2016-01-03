@@ -21,6 +21,19 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 		$groupID = 1;
 		$bonusPoints = 0;
 		$referrerID = null;
+		$addresses = array (
+			array (
+				'customerAddressFirstName' => 'First1',
+				'customerAddressLastName' => 'Last1',
+				'countryID' => 225,
+			),
+			array (
+				'customerAddressFirstName' => 'First2',
+				'customerAddressLastName' => 'Last2',
+				'countryID' => 225,
+			),
+		);
+
 		$customer = Customer::create(
 			array (
 				'customerEmail' => $email,
@@ -29,6 +42,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 				'customerGroupID' => $groupID,
 				'customerBonusPoints' => $bonusPoints,
 				'customerReferrerID' => $referrerID,
+				'customerAddresses' => $addresses,
 			)
 		);
 
@@ -38,6 +52,22 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($groupID, $customer->groupID);
 		$this->assertEquals($bonusPoints, $customer->bonusPoints);
 		$this->assertEquals($referrerID, $customer->referrerID);
+
+		for ($i = 0; $i < count($addresses); $i++) {
+			$customerAddress = $customer->addresses[$i];
+			$this->assertEquals(
+				$addresses[$i]['customerAddressFirstName'],
+				$customerAddress['customerAddressFirstName']
+			);
+			$this->assertEquals(
+				$addresses[$i]['customerAddressLastName'],
+				$customerAddress['customerAddressLastName']
+			);
+			$this->assertEquals(
+				$addresses[$i]['countryID'],
+				$customerAddress['countryID']
+			);
+		}
 	}
 
 	public function testRetrieve()
@@ -65,24 +95,66 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 		$email = 'test@example.com';
 		$status = CustomerStatus::ACTIVE;
 		$groupID = 1;
+		$addresses = array (
+			array (
+				'customerAddressFirstName' => 'First1',
+				'customerAddressLastName' => 'Last1',
+				'countryID' => 225,
+			),
+			array (
+				'customerAddressFirstName' => 'First2',
+				'customerAddressLastName' => 'Last2',
+				'countryID' => 225,
+			),
+		);
 
-		$customer = Customer::create(
+		$customerCreated = Customer::create(
 			array (
 				'customerEmail' => $email,
 				'customerStatus' => $status,
 				'customerGroupID' => $groupID,
+				'customerAddresses' => $addresses,
 			)
 		);
 
-		$customerRetrieved = Customer::retrieve($customer->id);
+		$customerRetrieved = Customer::retrieve($customerCreated->id);
 		$customerRetrieved->email = "updated.$email";
 		$customerRetrieved->status = CustomerStatus::DISABLED;
+		$customerRetrieved->addresses = array (
+			array (
+				'customerAddressFirstName' => 'UpdatedFirst1',
+				'customerAddressLastName' => 'UpdatedLast1',
+				'countryID' => 225,
+			),
+			array (
+				'customerAddressFirstName' => 'UpdatedFirst2',
+				'customerAddressLastName' => 'UpdatedLast2',
+				'countryID' => 225,
+			),
+		);
 		$customerRetrieved->save();
 
 		$customerSaved = Customer::retrieve($customerRetrieved->id);
 
 		$this->assertEquals($customerRetrieved->email, $customerSaved->email);
 		$this->assertEquals($customerRetrieved->status, $customerSaved->status);
+
+		$this->assertEquals(2, count($customerSaved->addresses));
+		for ($i = 0; $i < count($customerRetrieved->addresses); $i++) {
+			$customerAddress = $customerSaved->addresses[$i];
+			$this->assertEquals(
+				$customerRetrieved->addresses[$i]['customerAddressFirstName'],
+				$customerAddress['customerAddressFirstName']
+			);
+			$this->assertEquals(
+				$customerRetrieved->addresses[$i]['customerAddressLastName'],
+				$customerAddress['customerAddressLastName']
+			);
+			$this->assertEquals(
+				$customerRetrieved->addresses[$i]['countryID'],
+				$customerAddress['countryID']
+			);
+		}
 	}
 
 	public function testDelete()
