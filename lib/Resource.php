@@ -10,7 +10,8 @@ class Resource {
 
 	protected static $apiUrl = 'http://dev-1.myseliton.com/api/v1/';
 
-	public function __construct($params) {
+	public function __construct($params)
+	{
 		foreach (self::fields() as $field) {
 			$paramsField = self::field($field);
 			if (property_exists($params, $paramsField)) {
@@ -36,12 +37,14 @@ class Resource {
 		return json_encode($result);
 	}
 
-	public static function create($params = array ()) {
+	public static function create($params = array ())
+	{
 		$resourceClassName = self::className();
 		return new $resourceClassName(HttpClient::post(self::apiUrl(), json_encode($params)));
 	}
 
-	public static function retrieve($id) {
+	public static function retrieve($id)
+	{
 		$jsonDecoded = HttpClient::get(self::apiUrl($id));
 		$resourceName = self::name();
 		if (isset($jsonDecoded->$resourceName)) {
@@ -52,7 +55,8 @@ class Resource {
 		}
 	}
 
-	public static function all($params = null) {
+	public static function all($params = null)
+	{
 		$jsonDecoded = HttpClient::get(self::apiUrl(), $params	);
 		$namePlural = self::namePlural();
 		if (isset($jsonDecoded->$namePlural)) {
