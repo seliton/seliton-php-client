@@ -9,7 +9,7 @@ class Resource {
 	protected static $externalFields = array ();
 	protected static $fieldsToRest = array ();
 
-	protected static $apiUrl = 'http://dev-1.myseliton.com/api/v1/';
+	protected static $apiUrl;
 
 	public function __construct($params)
 	{
@@ -80,6 +80,11 @@ class Resource {
 	public function delete()
 	{
 		HttpClient::delete(self::apiUrl($this->id));
+	}
+
+	public static function setApiUrl($apiUrl)
+	{
+		self::$apiUrl = $apiUrl;
 	}
 
 	protected static function apiUrl($path = '')

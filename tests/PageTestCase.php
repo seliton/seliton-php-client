@@ -4,6 +4,11 @@ namespace Seliton\Client;
 
 class PageTestCase extends \PHPUnit_Framework_TestCase
 {
+	protected function setUp()
+	{
+		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+	}
+
 	public function testCreate()
 	{
 		$title = array ('en' => 'Test');

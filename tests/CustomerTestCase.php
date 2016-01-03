@@ -6,6 +6,8 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
+		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+
 		// Remove existing test customers
 		list ($customers) = Customer::all(array ('emailContains' => 'test'));
 		foreach ($customers as $customer) {

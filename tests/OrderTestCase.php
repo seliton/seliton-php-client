@@ -4,6 +4,11 @@ namespace Seliton\Client;
 
 class OrderTestCase extends \PHPUnit_Framework_TestCase
 {
+	protected function setUp()
+	{
+		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+	}
+
 	public function testRetrieve()
 	{
 		$orderRetrieved = Order::retrieve(2048);

@@ -6,6 +6,8 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
+		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+
 		// Remove existing test products
 		list ($products) = Product::all(array ('nameContains' => 'Test'));
 		foreach ($products as $product) {

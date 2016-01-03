@@ -6,6 +6,8 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
+		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+
 		// Remove existing test attributes
 		list ($attributes) = Attribute::all(array ('nameContains' => 'Test'));
 		foreach ($attributes as $attribute) {
