@@ -25,12 +25,14 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 			array (
 				'customerAddressFirstName' => 'First1',
 				'customerAddressLastName' => 'Last1',
-				'countryID' => 225,
+				'countryCode' => 'tr',
+				'stateCode' => '06',
 			),
 			array (
 				'customerAddressFirstName' => 'First2',
 				'customerAddressLastName' => 'Last2',
-				'countryID' => 225,
+				'countryCode' => 'tr',
+				'stateCode' => '06',
 			),
 		);
 
@@ -64,8 +66,12 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 				$customerAddress['customerAddressLastName']
 			);
 			$this->assertEquals(
-				$addresses[$i]['countryID'],
-				$customerAddress['countryID']
+				$addresses[$i]['countryCode'],
+				$customerAddress['countryCode']
+			);
+			$this->assertEquals(
+				$addresses[$i]['stateCode'],
+				$customerAddress['stateCode']
 			);
 		}
 	}
@@ -99,12 +105,12 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 			array (
 				'customerAddressFirstName' => 'First1',
 				'customerAddressLastName' => 'Last1',
-				'countryID' => 225,
+				'countryCode' => 'tr',
 			),
 			array (
 				'customerAddressFirstName' => 'First2',
 				'customerAddressLastName' => 'Last2',
-				'countryID' => 225,
+				'countryCode' => 'tr',
 			),
 		);
 
@@ -124,12 +130,12 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 			array (
 				'customerAddressFirstName' => 'UpdatedFirst1',
 				'customerAddressLastName' => 'UpdatedLast1',
-				'countryID' => 225,
+				'countryCode' => 'tr',
 			),
 			array (
 				'customerAddressFirstName' => 'UpdatedFirst2',
 				'customerAddressLastName' => 'UpdatedLast2',
-				'countryID' => 225,
+				'countryCode' => 'tr',
 			),
 		);
 		$customerRetrieved->save();
@@ -151,8 +157,8 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 				$customerAddress['customerAddressLastName']
 			);
 			$this->assertEquals(
-				$customerRetrieved->addresses[$i]['countryID'],
-				$customerAddress['countryID']
+				$customerRetrieved->addresses[$i]['countryCode'],
+				$customerAddress['countryCode']
 			);
 		}
 	}
