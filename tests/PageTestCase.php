@@ -6,7 +6,12 @@ class PageTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+		$this->seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+	}
+
+	protected function page()
+	{
+		return $this->seliton->page();
 	}
 
 	public function testCreate()
@@ -18,7 +23,7 @@ class PageTestCase extends \PHPUnit_Framework_TestCase
 		$seoDescription = array ('en' => 'SEO Description');
 		$cssClass = 'test';
 		$isActive = true;
-		$page = Page::create(
+		$page = $this->page()->create(
 			array (
 				'pageTitle' => $title,
 				'pageContent' => $content,
@@ -45,14 +50,14 @@ class PageTestCase extends \PHPUnit_Framework_TestCase
 		$title = array ('en' => 'Test');
 		$cssClass = 'test';
 
-		$page = Page::create(
+		$page = $this->page()->create(
 			array (
 				'pageTitle' => $title,
 				'pageCssClass' => $cssClass,
 			)
 		);
 
-		$pageRetrieved = Page::retrieve($page->id);
+		$pageRetrieved = $this->page()->retrieve($page->id);
 
 		$this->assertEquals($title['en'], $pageRetrieved->title->EN);
 		$this->assertEquals($cssClass, $pageRetrieved->cssClass);
@@ -64,7 +69,7 @@ class PageTestCase extends \PHPUnit_Framework_TestCase
 		$cssClass = 'test';
 		$isActive = true;
 
-		$page = Page::create(
+		$page = $this->page()->create(
 			array (
 				'pageTitle' => $title,
 				'pageCssClass' => $cssClass,
@@ -72,12 +77,12 @@ class PageTestCase extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$pageRetrieved = Page::retrieve($page->id);
+		$pageRetrieved = $this->page()->retrieve($page->id);
 		$pageRetrieved->cssClass = "updated-$cssClass";
 		$pageRetrieved->isActive = !$isActive;
 		$pageRetrieved->save();
 
-		$pageSaved = Page::retrieve($pageRetrieved->id);
+		$pageSaved = $this->page()->retrieve($pageRetrieved->id);
 
 		$this->assertEquals($pageRetrieved->cssClass, $pageSaved->cssClass);
 		$this->assertEquals($pageRetrieved->isActive, $pageSaved->isActive);
@@ -85,25 +90,25 @@ class PageTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testDelete()
 	{
-		$page = Page::create();
+		$page = $this->page()->create();
 
-		$pageRetrieved = Page::retrieve($page->id);
+		$pageRetrieved = $this->page()->retrieve($page->id);
 		$pageRetrieved->delete();
 
 		$this->setExpectedException('Exception');
-		$pageNonExistent = Page::retrieve($pageRetrieved->id);
+		$pageNonExistent = $this->page()->retrieve($pageRetrieved->id);
 	}
 
 	public function testAll()
 	{
 		// Remove existing test pages
-		list ($pagesBefore) = Page::all(array ('titleContains' => 'Test'));
+		list ($pagesBefore) = $this->page()->all(array ('titleContains' => 'Test'));
 		foreach ($pagesBefore as $pageBefore) {
 			$pageBefore->delete();
 		}
 
 		for ($i = 1; $i <= 3; $i++) {
-			Page::create(
+			$this->page()->create(
 				array (
 					'pageTitle' => array ('en' => "Test $i"),
 					'pageCssClass' => "test-$i"
@@ -111,7 +116,7 @@ class PageTestCase extends \PHPUnit_Framework_TestCase
 			);
 		}
 
-		list ($pages, $count) = Page::all(array (
+		list ($pages, $count) = $this->page()->all(array (
 			'titleContains' => 'Test',
 			'limit' => 2,
 			'offset' => 1,

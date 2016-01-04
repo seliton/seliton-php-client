@@ -6,13 +6,18 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+		$this->seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
 
 		// Remove existing test products
-		list ($products) = Product::all(array ('nameContains' => 'Test'));
+		list ($products) = $this->product()->all(array ('nameContains' => 'Test'));
 		foreach ($products as $product) {
 			$product->delete();
 		}
+	}
+
+	protected function product()
+	{
+		return $this->seliton->product();
 	}
 
 	public function testCreate()
@@ -57,7 +62,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			),
 		);
 
-		$product = Product::create(
+		$product = $this->product()->create(
 			array (
 				'productName' => $name,
 				'productDescription' => $description,
@@ -145,7 +150,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$code = 'test';
 		$categories = array (array ('categoryID' => 4));
 
-		$product = Product::create(
+		$product = $this->product()->create(
 			array (
 				'productName' => array ('en' => $name),
 				'productCode' => $code,
@@ -153,7 +158,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$productRetrieved = Product::retrieve($product->id);
+		$productRetrieved = $this->product()->retrieve($product->id);
 
 		$this->assertEquals($name, $productRetrieved->name->EN);
 		$this->assertEquals($code, $productRetrieved->code);
@@ -178,7 +183,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			),
 		);
 
-		$product = Product::create(
+		$product = $this->product()->create(
 			array (
 				'productName' => array ('en' => $name),
 				'productCode' => $code,
@@ -187,7 +192,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$productRetrieved = Product::retrieve($product->id);
+		$productRetrieved = $this->product()->retrieve($product->id);
 		$productRetrieved->code = 'test_save';
 		$productRetrieved->categories = array (
 			array ('categoryID' => 1),
@@ -205,7 +210,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		);
 		$productRetrieved->save();
 
-		$productSaved = Product::retrieve($productRetrieved->id);
+		$productSaved = $this->product()->retrieve($productRetrieved->id);
 
 		$this->assertEquals($productRetrieved->code, $productSaved->code);
 		$this->assertEquals($productRetrieved->categories, $productSaved->categories);
@@ -228,7 +233,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$code = 'test';
 		$categories = array (array ('categoryID' => 4));
 
-		$product = Product::create(
+		$product = $this->product()->create(
 			array (
 				'productName' => array ('en' => $name),
 				'productCode' => $code,
@@ -236,17 +241,17 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$productRetrieved = Product::retrieve($product->id);
+		$productRetrieved = $this->product()->retrieve($product->id);
 		$productRetrieved->delete();
 
 		$this->setExpectedException('Exception');
-		$productNonExistent = Product::retrieve($product->id);
+		$productNonExistent = $this->product()->retrieve($product->id);
 	}
 
 	public function testAll()
 	{
 		for ($i = 1; $i <= 3; $i++) {
-			Product::create(
+			$this->product()->create(
 				array (
 					'productName' => array ('en' => "Test $i"),
 					'productCode' => "test_$i",
@@ -255,7 +260,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 			);
 		}
 
-		list ($products, $count) = Product::all(array (
+		list ($products, $count) = $this->product()->all(array (
 			'nameContains' => 'Test',
 			'limit' => 2,
 			'offset' => 1,

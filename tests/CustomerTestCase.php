@@ -6,13 +6,18 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+		$this->seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
 
 		// Remove existing test customers
-		list ($customers) = Customer::all(array ('emailContains' => 'test'));
+		list ($customers) = $this->customer()->all(array ('emailContains' => 'test'));
 		foreach ($customers as $customer) {
 			$customer->delete();
 		}
+	}
+
+	protected function customer()
+	{
+		return $this->seliton->customer();
 	}
 
 	public function testCreate()
@@ -38,7 +43,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 			),
 		);
 
-		$customer = Customer::create(
+		$customer = $this->customer()->create(
 			array (
 				'customerEmail' => $email,
 				'customerPassword' => $password,
@@ -84,7 +89,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 		$status = CustomerStatus::ACTIVE;
 		$groupID = 1;
 
-		$customer = Customer::create(
+		$customer = $this->customer()->create(
 			array (
 				'customerEmail' => $email,
 				'customerStatus' => $status,
@@ -92,7 +97,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$customerRetrieved = Customer::retrieve($customer->id);
+		$customerRetrieved = $this->customer()->retrieve($customer->id);
 
 		$this->assertEquals($email, $customerRetrieved->email);
 		$this->assertEquals($status, $customerRetrieved->status);
@@ -116,7 +121,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 			),
 		);
 
-		$customerCreated = Customer::create(
+		$customerCreated = $this->customer()->create(
 			array (
 				'customerEmail' => $email,
 				'customerStatus' => $status,
@@ -125,7 +130,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$customerRetrieved = Customer::retrieve($customerCreated->id);
+		$customerRetrieved = $this->customer()->retrieve($customerCreated->id);
 		$customerRetrieved->email = "updated.$email";
 		$customerRetrieved->status = CustomerStatus::DISABLED;
 		$customerRetrieved->addresses = array (
@@ -142,7 +147,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 		);
 		$customerRetrieved->save();
 
-		$customerSaved = Customer::retrieve($customerRetrieved->id);
+		$customerSaved = $this->customer()->retrieve($customerRetrieved->id);
 
 		$this->assertEquals($customerRetrieved->email, $customerSaved->email);
 		$this->assertEquals($customerRetrieved->status, $customerSaved->status);
@@ -170,30 +175,30 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 		$email = 'test@example.com';
 		$groupID = 1;
 
-		$customer = Customer::create(
+		$customer = $this->customer()->create(
 			array (
 				'customerEmail' => $email,
 				'customerGroupID' => $groupID,
 			)
 		);
 
-		$customerRetrieved = Customer::retrieve($customer->id);
+		$customerRetrieved = $this->customer()->retrieve($customer->id);
 		$customerRetrieved->delete();
 
 		$this->setExpectedException('Exception');
-		$customerNonExistent = Customer::retrieve($customerRetrieved->id);
+		$customerNonExistent = $this->customer()->retrieve($customerRetrieved->id);
 	}
 
 	public function testAll()
 	{
 		// Remove existing test customers
-		list ($customersBefore) = Customer::all(array ('emailContains' => 'test'));
+		list ($customersBefore) = $this->customer()->all(array ('emailContains' => 'test'));
 		foreach ($customersBefore as $customerBefore) {
 			$customerBefore->delete();
 		}
 
 		for ($i = 1; $i <= 3; $i++) {
-			Customer::create(
+			$this->customer()->create(
 				array (
 					'customerEmail' => "test.$i@example.com",
 					'customerGroupID' => 1,
@@ -202,7 +207,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 			);
 		}
 
-		list ($customers, $count) = Customer::all(array (
+		list ($customers, $count) = $this->customer()->all(array (
 			'emailContains' => 'test',
 			'limit' => 2,
 			'offset' => 1,

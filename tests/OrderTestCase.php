@@ -6,12 +6,17 @@ class OrderTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+		$this->seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+	}
+
+	protected function order()
+	{
+		return $this->seliton->order();
 	}
 
 	public function testRetrieve()
 	{
-		$orderRetrieved = Order::retrieve(2048);
+		$orderRetrieved = $this->order()->retrieve(2048);
 
 		$this->assertEquals('Flat Rate', $orderRetrieved->shippingModuleName);
 		$this->assertEquals('Collect on delivery', $orderRetrieved->paymentModuleName);
@@ -23,7 +28,7 @@ class OrderTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testAll()
 	{
-		list ($orders, $count) = Order::all(array (
+		list ($orders, $count) = $this->order()->all(array (
 			'limit' => 2,
 			'offset' => 1,
 			'fields' => 'orderId,orderPaymentModuleName'

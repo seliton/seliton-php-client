@@ -3,9 +3,10 @@
 namespace Seliton\Client;
 
 class Seliton {
-	public static function setApiUrl($apiUrl)
+
+	public function __construct($apiUrl)
 	{
-		Resource::setApiUrl($apiUrl);
+		$this->apiUrl = $apiUrl;
 	}
 
 	public function attribute()
@@ -41,10 +42,5 @@ class Seliton {
 	public function product()
 	{
 		return new Product($this->apiUrl);
-	}
-
-	public function __construct($apiUrl)
-	{
-		$this->apiUrl = $apiUrl;
 	}
 }

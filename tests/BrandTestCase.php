@@ -6,7 +6,12 @@ class BrandTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+		$this->seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+	}
+
+	protected function brand()
+	{
+		return $this->seliton->brand();
 	}
 
 	public function testCreate()
@@ -22,7 +27,7 @@ class BrandTestCase extends \PHPUnit_Framework_TestCase
 		$imageHeight = 150;
 		$productCount = 1;
 		$sort = 1000;
-		$brand = Brand::create(
+		$brand = $this->brand()->create(
 			array (
 				'brandName' => $name,
 				'brandDescription' => $description,
@@ -57,14 +62,14 @@ class BrandTestCase extends \PHPUnit_Framework_TestCase
 		$website = 'brand.com';
 		$image = 'brand.jpg';
 
-		$brand = Brand::create(
+		$brand = $this->brand()->create(
 			array (
 				'brandWebsite' => $website,
 				'brandImage' => $image
 			)
 		);
 
-		$brandRetrieved = Brand::retrieve($brand->id);
+		$brandRetrieved = $this->brand()->retrieve($brand->id);
 
 		$this->assertEquals($brandRetrieved->website, $website);
 		$this->assertEquals($brandRetrieved->image, "http://dev-1.myseliton.com/$image");
@@ -75,19 +80,19 @@ class BrandTestCase extends \PHPUnit_Framework_TestCase
 		$website = 'brand.com';
 		$image = 'brand.jpg';
 
-		$brand = Brand::create(
+		$brand = $this->brand()->create(
 			array (
 				'brandWebsite' => $website,
 				'brandImage' => $image
 			)
 		);
 
-		$brandRetrieved = Brand::retrieve($brand->id);
+		$brandRetrieved = $this->brand()->retrieve($brand->id);
 		$brandRetrieved->website = "new $website";
 		$brandRetrieved->image = "new $image";
 		$brandRetrieved->save();
 
-		$brandSaved = Brand::retrieve($brandRetrieved->id);
+		$brandSaved = $this->brand()->retrieve($brandRetrieved->id);
 
 		$this->assertEquals($brandRetrieved->website, $brandSaved->website);
 		$this->assertEquals("http://dev-1.myseliton.com/{$brandRetrieved->image}", $brandSaved->image);
@@ -95,30 +100,30 @@ class BrandTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testDelete()
 	{
-		$brand = Brand::create(
+		$brand = $this->brand()->create(
 			array (
 				'brandWebsite' => 'brand.com',
 				'brandImage' => 'brand.jpg'
 			)
 		);
 
-		$brandRetrieved = Brand::retrieve($brand->id);
+		$brandRetrieved = $this->brand()->retrieve($brand->id);
 		$brandRetrieved->delete();
 
 		$this->setExpectedException('Exception');
-		$brandNonExistent = Brand::retrieve($brandRetrieved->id);
+		$brandNonExistent = $this->brand()->retrieve($brandRetrieved->id);
 	}
 
 	public function testAll()
 	{
 		// Remove existing top brands
-		list ($brandsBefore) = Brand::all(array ('nameContains' => 'Top Brand'));
+		list ($brandsBefore) = $this->brand()->all(array ('nameContains' => 'Top Brand'));
 		foreach ($brandsBefore as $brandBefore) {
 			$brandBefore->delete();
 		}
 
 		for ($i = 1; $i <= 3; $i++) {
-			Brand::create(
+			$this->brand()->create(
 				array (
 					'brandName' => array ('en' => "Top Brand $i"),
 					'brandImage' => "topbrand$i.jpg"
@@ -126,7 +131,7 @@ class BrandTestCase extends \PHPUnit_Framework_TestCase
 			);
 		}
 
-		list ($brands, $count) = Brand::all(array (
+		list ($brands, $count) = $this->brand()->all(array (
 			'nameContains' => 'Top Brand',
 			'limit' => 2,
 			'offset' => 1,
