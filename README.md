@@ -53,5 +53,5 @@ Install dependencies as mentioned above (which will resolve [PHPUnit](http://pac
 Or to run an individual test file:
 
 ```bash
-./vendor/bin/phpunit tests/PageTest.php
+./vendor/bin/phpunit tests/PageTestCase.php
 ```
