@@ -9,8 +9,6 @@ class Resource {
 	protected static $externalFields = array ();
 	protected static $fieldsToRest = array ();
 
-	protected static $apiUrlStatic;
-
 	protected $apiUrl = null;
 
 	public function __construct($params)
@@ -44,126 +42,49 @@ class Resource {
 		return json_encode($result);
 	}
 
-	public function __call($methodName, $arguments)
-	{
-		switch ($methodName) {
-			case 'create':
-				if (isset($arguments[0])) {
-					return $this->_create($arguments[0]);
-				} else {
-					return $this->_create();
-				}
-				break;
-			case 'retrieve':
-				return $this->_retrieve($arguments[0]);
-				break;
-			case 'all':
-				if (isset($arguments[0])) {
-					return $this->_all($arguments[0]);
-				} else {
-					return $this->_all();
-				}
-				break;
-			default:
-				throw new MemberAccessException('Method ' . $methodName . ' not exists');
-		}
-	}
-
-	protected function _create($params = array ())
+	public function create($params = array ())
 	{
 		$resource = static::createWithApiUrl($this->apiUrl(), $params);
-		$resource->_setApiUrl($this->apiUrl);
+		$resource->setApiUrl($this->apiUrl);
 		return $resource;
 	}
 
-	public static function __callStatic($methodName, $arguments)
-	{
-		switch ($methodName) {
-			case 'create':
-				if (isset($arguments[0])) {
-					return static::createStatic($arguments[0]);
-				} else {
-					return static::createStatic();
-				}
-				break;
-			case 'retrieve':
-				return static::retrieveStatic($arguments[0]);
-				break;
-			case 'all':
-				if (isset($arguments[0])) {
-					return static::allStatic($arguments[0]);
-				} else {
-					return static::allStatic();
-				}
-				break;
-			default:
-				throw new MemberAccessException('Method ' . $methodName . ' not exists');
-		}
-	}
-
-	public static function createStatic($params = array ())
-	{
-		return static::createWithApiUrl(self::apiUrlStatic(), $params);
-	}
-
-	protected static function retrieveStatic($id)
-	{
-		return static::retrieveWithApiUrl(self::apiUrlStatic($id), $id);
-	}
-
-	protected function _retrieve($id)
+	public function retrieve($id)
 	{
 		$resource = static::retrieveWithApiUrl($this->apiUrl($id), $id);
-		$resource->_setApiUrl($this->apiUrl);
+		$resource->setApiUrl($this->apiUrl);
 		return $resource;
 	}
 
-	protected function _setApiUrl($apiUrl)
+	protected function setApiUrl($apiUrl)
 	{
 		$this->apiUrl = $apiUrl;
 	}
 
-	protected static function allStatic($params = null)
-	{
-		return static::allWithApiUrl(self::apiUrlStatic(), $params);
-	}
-
-	protected function _all($params = null)
+	public function all($params = null)
 	{
 		list ($resources, $count) = static::allWithApiUrl($this->apiUrl(), $params);
 		foreach ($resources as $resource) {
-			$resource->_setApiUrl($this->apiUrl);
+			$resource->setApiUrl($this->apiUrl);
 		}
 		return array ($resources, $count);
 	}
 
 	public function save()
 	{
-		$apiUrl = is_null($this->apiUrl) ?
-			self::apiUrlStatic($this->id) : $this->apiUrl($this->id);
+		$apiUrl = $this->apiUrl($this->id);
 		HttpClient::put($apiUrl, $this->json());
 	}
 
 	public function delete()
 	{
-		$apiUrl = is_null($this->apiUrl) ?
-			self::apiUrlStatic($this->id) : $this->apiUrl($this->id);
+		$apiUrl = $this->apiUrl($this->id);
 		HttpClient::delete($apiUrl);
-	}
-
-	public static function setApiUrl($apiUrl)
-	{
-		self::$apiUrlStatic = $apiUrl;
 	}
 
 	protected function apiUrl($path = '')
 	{
 		return self::apiUrlWithBase($this->apiUrl, $path);
-	}
-
-	protected static function apiUrlStatic($path = '')
-	{
-		return self::apiUrlWithBase(self::$apiUrlStatic, $path);
 	}
 
 	protected static function apiUrlWithBase($baseUrl, $path = '')
