@@ -8,11 +8,6 @@ class Seliton {
 		Resource::setApiUrl($apiUrl);
 	}
 
-	public static function factory($apiUrl)
-	{
-		return new Seliton($apiUrl);
-	}
-
 	public function attribute()
 	{
 		return new Attribute($this->apiUrl);

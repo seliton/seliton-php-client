@@ -15,7 +15,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactoryCreate()
 	{
-		$seliton = Seliton::factory('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
 
 		$page = $seliton->page()->create();
 
@@ -24,7 +24,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactoryRetrieve()
 	{
-		$seliton = Seliton::factory('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
 
 		$page = $seliton->page()->create();
 		$pageRetrieved = $seliton->page()->retrieve($page->id);
@@ -34,7 +34,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactorySave()
 	{
-		$seliton = Seliton::factory('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
 
 		$page = $seliton->page()->create();
 		$pageRetrieved = $seliton->page()->retrieve($page->id);
@@ -48,7 +48,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactoryDelete()
 	{
-		$seliton = Seliton::factory('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
 
 		$page = $seliton->page()->create();
 
@@ -61,7 +61,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactoryAll()
 	{
-		$seliton = Seliton::factory('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
 
 		// Remove existing test pages
 		list ($pagesBefore) = $seliton->page()->all(
