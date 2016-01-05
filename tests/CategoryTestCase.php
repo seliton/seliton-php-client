@@ -6,12 +6,8 @@ class CategoryTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		$this->seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
-	}
-
-	protected function category()
-	{
-		return $this->seliton->category();
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$this->category = $seliton->category();
 	}
 
 	public function testCreate()
@@ -36,7 +32,7 @@ class CategoryTestCase extends \PHPUnit_Framework_TestCase
 		$iconImage = 'icon.jpg';
 		$sort = 1000;
 
-		$category = $this->category()->create(
+		$category = $this->category->create(
 			array (
 				'categoryName' => $name,
 				'categoryDescription' => $description,
@@ -91,14 +87,14 @@ class CategoryTestCase extends \PHPUnit_Framework_TestCase
 		$cssClass = 'category';
 		$image = 'category.jpg';
 
-		$category = $this->category()->create(
+		$category = $this->category->create(
 			array (
 				'categoryCssClass' => $cssClass,
 				'categoryImage' => $image
 			)
 		);
 
-		$categoryRetrieved = $this->category()->retrieve($category->id);
+		$categoryRetrieved = $this->category->retrieve($category->id);
 
 		$this->assertEquals($categoryRetrieved->cssClass, $cssClass);
 		$this->assertEquals($categoryRetrieved->image, $image);
@@ -109,19 +105,19 @@ class CategoryTestCase extends \PHPUnit_Framework_TestCase
 		$cssClass = 'category';
 		$image = 'category.jpg';
 
-		$category = $this->category()->create(
+		$category = $this->category->create(
 			array (
 				'categoryCssClass' => $cssClass,
 				'categoryImage' => $image
 			)
 		);
 
-		$categoryRetrieved = $this->category()->retrieve($category->id);
+		$categoryRetrieved = $this->category->retrieve($category->id);
 		$categoryRetrieved->cssClass = "new-$cssClass";
 		$categoryRetrieved->image = "new-$image";
 		$categoryRetrieved->save();
 
-		$categorySaved = $this->category()->retrieve($categoryRetrieved->id);
+		$categorySaved = $this->category->retrieve($categoryRetrieved->id);
 
 		$this->assertEquals($categoryRetrieved->cssClass, $categorySaved->cssClass);
 		$this->assertEquals($categoryRetrieved->image, $categorySaved->image);
@@ -129,14 +125,14 @@ class CategoryTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testReadonlyFields()
 	{
-		$category = $this->category()->create();
+		$category = $this->category->create();
 
-		$categoryRetrieved = $this->category()->retrieve($category->id);
+		$categoryRetrieved = $this->category->retrieve($category->id);
 		$categoryRetrieved->productCount = 1;
 		$categoryRetrieved->deepProductCount = 1;
 		$categoryRetrieved->save();
 
-		$categorySaved = $this->category()->retrieve($categoryRetrieved->id);
+		$categorySaved = $this->category->retrieve($categoryRetrieved->id);
 
 		$this->assertEquals(0, $categorySaved->productCount);
 		$this->assertEquals(0, $categorySaved->deepProductCount);
@@ -144,7 +140,7 @@ class CategoryTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testBooleanFields()
 	{
-		$category = $this->category()->create();
+		$category = $this->category->create();
 
 		$this->assertSame(false, $category->featured);
 		$this->assertSame(true, $category->webPosActive);
@@ -152,30 +148,30 @@ class CategoryTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testDelete()
 	{
-		$category = $this->category()->create(
+		$category = $this->category->create(
 			array (
 				'categoryCssClass' => 'category',
 				'categoryImage' => 'category.jpg'
 			)
 		);
 
-		$categoryRetrieved = $this->category()->retrieve($category->id);
+		$categoryRetrieved = $this->category->retrieve($category->id);
 		$categoryRetrieved->delete();
 
 		$this->setExpectedException('Exception');
-		$categoryNonExistent = $this->category()->retrieve($categoryRetrieved->id);
+		$categoryNonExistent = $this->category->retrieve($categoryRetrieved->id);
 	}
 
 	public function testAll()
 	{
 		// Remove existing top categories
-		list ($categoriesBefore) = $this->category()->all(array ('nameContains' => 'Top Category'));
+		list ($categoriesBefore) = $this->category->all(array ('nameContains' => 'Top Category'));
 		foreach ($categoriesBefore as $categoryBefore) {
 			$categoryBefore->delete();
 		}
 
 		for ($i = 1; $i <= 3; $i++) {
-			$this->category()->create(
+			$this->category->create(
 				array (
 					'categoryName' => array ('en' => "Top Category $i"),
 					'categoryImage' => "topcategory$i.jpg"
@@ -183,7 +179,7 @@ class CategoryTestCase extends \PHPUnit_Framework_TestCase
 			);
 		}
 
-		list ($categories, $count) = $this->category()->all(array (
+		list ($categories, $count) = $this->category->all(array (
 			'nameContains' => 'Top Category',
 			'limit' => 2,
 			'offset' => 1,

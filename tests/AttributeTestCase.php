@@ -6,18 +6,14 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
-		$this->seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$this->_attribute = $seliton->attribute();
 
 		// Remove existing test attributes
-		list ($attributes) = $this->_attribute()->all(array ('nameContains' => 'Test'));
+		list ($attributes) = $this->_attribute->all(array ('nameContains' => 'Test'));
 		foreach ($attributes as $attribute) {
 			$attribute->delete();
 		}
-	}
-
-	protected function _attribute()
-	{
-		return $this->seliton->attribute();
 	}
 
 	public function testCreate()
@@ -41,7 +37,7 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 		$showOnHover = true;
 		$sort = 200;
 
-		$attribute = $this->_attribute()->create(
+		$attribute = $this->_attribute->create(
 			array (
 				'attributeName' => array ('en' => $name),
 				'attributeUnit' => array ('en' => $unit),
@@ -97,7 +93,7 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 		$type = AttributeType::TEXT;
 		$validator = AttributeValidator::NONE;
 
-		$attribute = $this->_attribute()->create(
+		$attribute = $this->_attribute->create(
 			array (
 				'attributeName' => array ('en' => $name),
 				'attributeCode' => $code,
@@ -106,7 +102,7 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$attributeRetrieved = $this->_attribute()->retrieve($attribute->id);
+		$attributeRetrieved = $this->_attribute->retrieve($attribute->id);
 
 		$this->assertEquals($attributeRetrieved->type, $type);
 		$this->assertEquals($attributeRetrieved->validator, $validator);
@@ -119,7 +115,7 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 		$type = AttributeType::TEXT;
 		$validator = AttributeValidator::NONE;
 
-		$attribute = $this->_attribute()->create(
+		$attribute = $this->_attribute->create(
 			array (
 				'attributeName' => array ('en' => $name),
 				'attributeCode' => $code,
@@ -128,18 +124,18 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$attributeRetrieved = $this->_attribute()->retrieve($attribute->id);
+		$attributeRetrieved = $this->_attribute->retrieve($attribute->id);
 		$attributeRetrieved->type = AttributeType::SELECT;
 		$attributeRetrieved->save();
 
-		$attributeSaved = $this->_attribute()->retrieve($attributeRetrieved->id);
+		$attributeSaved = $this->_attribute->retrieve($attributeRetrieved->id);
 
 		$this->assertEquals($attributeRetrieved->type, $attributeSaved->type);
 	}
 
 	public function testDelete()
 	{
-		$attribute = $this->_attribute()->create(
+		$attribute = $this->_attribute->create(
 			array (
 				'attributeName' => array ('en' => 'Test'),
 				'attributeCode' => 'test',
@@ -148,17 +144,17 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$attributeRetrieved = $this->_attribute()->retrieve($attribute->id);
+		$attributeRetrieved = $this->_attribute->retrieve($attribute->id);
 		$attributeRetrieved->delete();
 
 		$this->setExpectedException('Exception');
-		$attributeNonExistent = $this->_attribute()->retrieve($attributeRetrieved->id);
+		$attributeNonExistent = $this->_attribute->retrieve($attributeRetrieved->id);
 	}
 
 	public function testAll()
 	{
 		for ($i = 1; $i <= 3; $i++) {
-			$this->_attribute()->create(
+			$this->_attribute->create(
 				array (
 					'attributeName' => array ('en' => "Test $i"),
 					'attributeCode' => "test_$i",
@@ -168,7 +164,7 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 			);
 		}
 
-		list ($attributes, $count) = $this->_attribute()->all(array (
+		list ($attributes, $count) = $this->_attribute->all(array (
 			'nameContains' => 'Test',
 			'limit' => 2,
 			'offset' => 1,
