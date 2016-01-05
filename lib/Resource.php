@@ -43,15 +43,26 @@ class Resource {
 	}
 
 	public function create($params = array ())
-	{
-		$resource = static::createWithApiUrl($this->apiUrl(), $params);
+	{		
+		$jsonDecoded = HttpClient::post($this->apiUrl(), json_encode($params));
+
+		$resourceClassName = self::className();
+		$resource = new $resourceClassName($jsonDecoded);
 		$resource->setApiUrl($this->apiUrl);
 		return $resource;
 	}
 
 	public function retrieve($id)
 	{
-		$resource = static::retrieveWithApiUrl($this->apiUrl($id), $id);
+		$jsonDecoded = HttpClient::get($this->apiUrl($id));
+
+		$resourceName = self::name();
+		if (isset($jsonDecoded->$resourceName)) {
+			$resourceClassName = self::className();
+			$resource = new $resourceClassName($jsonDecoded->$resourceName);
+		} else {
+			throw new \Exception($jsonDecoded->error->message);
+		}
 		$resource->setApiUrl($this->apiUrl);
 		return $resource;
 	}
@@ -63,11 +74,22 @@ class Resource {
 
 	public function all($params = null)
 	{
-		list ($resources, $count) = static::allWithApiUrl($this->apiUrl(), $params);
+		$jsonDecoded = HttpClient::get($this->apiUrl(), $params);
+		$namePlural = self::namePlural();
+		if (isset($jsonDecoded->$namePlural)) {
+			$resources = array ();
+			foreach ($jsonDecoded->$namePlural as $resource) {
+				$resourceClassName = self::className();
+				$resources[] = new $resourceClassName($resource);
+			}
+			$resourcesCount = $jsonDecoded->_metadata->count;
+		} else {
+			throw new \Exception($jsonDecoded->error->message);
+		}
 		foreach ($resources as $resource) {
 			$resource->setApiUrl($this->apiUrl);
 		}
-		return array ($resources, $count);
+		return array ($resources, $resourcesCount);
 	}
 
 	public function save()
@@ -84,12 +106,7 @@ class Resource {
 
 	protected function apiUrl($path = '')
 	{
-		return self::apiUrlWithBase($this->apiUrl, $path);
-	}
-
-	protected static function apiUrlWithBase($baseUrl, $path = '')
-	{
-		return $baseUrl.self::namePlural()."/$path";
+		return $this->apiUrl.self::namePlural()."/$path";
 	}
 
 	protected static function name()
@@ -124,40 +141,6 @@ class Resource {
 		}
 
 		return self::name().ucfirst($name);
-	}
-
-	protected static function createWithApiUrl($apiUrl, $params = array ())
-	{
-		$resourceClassName = self::className();
-		return new $resourceClassName(HttpClient::post($apiUrl, json_encode($params)));
-	}
-
-	protected static function retrieveWithApiUrl($apiUrl, $id)
-	{
-		$jsonDecoded = HttpClient::get($apiUrl);
-		$resourceName = self::name();
-		if (isset($jsonDecoded->$resourceName)) {
-			$resourceClassName = self::className();
-			return new $resourceClassName($jsonDecoded->$resourceName);
-		} else {
-			throw new \Exception($jsonDecoded->error->message);
-		}
-	}
-
-	protected static function allWithApiUrl($apiUrl, $params = null)
-	{
-		$jsonDecoded = HttpClient::get($apiUrl, $params);
-		$namePlural = self::namePlural();
-		if (isset($jsonDecoded->$namePlural)) {
-			$resources = array ();
-			foreach ($jsonDecoded->$namePlural as $resource) {
-				$resourceClassName = self::className();
-				$resources[] = new $resourceClassName($resource);
-			}
-			return array ($resources, $jsonDecoded->_metadata->count);
-		} else {
-			throw new \Exception($jsonDecoded->error->message);
-		}
 	}
 
 	protected function convertField($name, $value)
