@@ -11,26 +11,27 @@ class Resource {
 
 	protected $apiUrl = null;
 
-	public function __construct($params)
+	public function __construct($apiUrl)
 	{
-		if (is_string($params)) {
-			$this->apiUrl = $params;
-		} else {
-			foreach (self::fields() as $field) {
-				$paramsField = self::field($field);
-				if (property_exists($params, $paramsField)) {
-					$this->$field = $this->convertField($field, $params->$paramsField);
-				}
+		$this->apiUrl = $apiUrl;
+	}
+
+	protected function setFieldsFromJsonDecoded($jsonDecoded)
+	{
+		foreach (self::fields() as $field) {
+			$paramsField = self::field($field);
+			if (property_exists($jsonDecoded, $paramsField)) {
+				$this->$field = $this->convertField($field, $jsonDecoded->$paramsField);
 			}
-			foreach (static::$externalFields as $field) {
-				if (property_exists($params, $field)) {
-					$this->$field = $params->$field;
-				}
+		}
+		foreach (static::$externalFields as $field) {
+			if (property_exists($jsonDecoded, $field)) {
+				$this->$field = $jsonDecoded->$field;
 			}
 		}
 	}
 
-	public function json()
+	public function toJson()
 	{
 		$result = array ();
 		foreach (self::fields() as $field) {
@@ -43,12 +44,12 @@ class Resource {
 	}
 
 	public function create($params = array ())
-	{		
+	{
 		$jsonDecoded = HttpClient::post($this->apiUrl(), json_encode($params));
 
 		$resourceClassName = self::className();
-		$resource = new $resourceClassName($jsonDecoded);
-		$resource->setApiUrl($this->apiUrl);
+		$resource = new $resourceClassName($this->apiUrl);
+		$resource->setFieldsFromJsonDecoded($jsonDecoded);
 		return $resource;
 	}
 
@@ -59,17 +60,12 @@ class Resource {
 		$resourceName = self::name();
 		if (isset($jsonDecoded->$resourceName)) {
 			$resourceClassName = self::className();
-			$resource = new $resourceClassName($jsonDecoded->$resourceName);
+			$resource = new $resourceClassName($this->apiUrl);
+			$resource->setFieldsFromJsonDecoded($jsonDecoded->$resourceName);
 		} else {
 			throw new \Exception($jsonDecoded->error->message);
 		}
-		$resource->setApiUrl($this->apiUrl);
 		return $resource;
-	}
-
-	protected function setApiUrl($apiUrl)
-	{
-		$this->apiUrl = $apiUrl;
 	}
 
 	public function all($params = null)
@@ -78,16 +74,15 @@ class Resource {
 		$namePlural = self::namePlural();
 		if (isset($jsonDecoded->$namePlural)) {
 			$resources = array ();
-			foreach ($jsonDecoded->$namePlural as $resource) {
+			foreach ($jsonDecoded->$namePlural as $resourceJsonDecoded) {
 				$resourceClassName = self::className();
-				$resources[] = new $resourceClassName($resource);
+				$resource = new $resourceClassName($this->apiUrl);
+				$resource->setFieldsFromJsonDecoded($resourceJsonDecoded);
+				$resources[] = $resource;
 			}
 			$resourcesCount = $jsonDecoded->_metadata->count;
 		} else {
 			throw new \Exception($jsonDecoded->error->message);
-		}
-		foreach ($resources as $resource) {
-			$resource->setApiUrl($this->apiUrl);
 		}
 		return array ($resources, $resourcesCount);
 	}
@@ -95,7 +90,7 @@ class Resource {
 	public function save()
 	{
 		$apiUrl = $this->apiUrl($this->id);
-		HttpClient::put($apiUrl, $this->json());
+		HttpClient::put($apiUrl, $this->toJson());
 	}
 
 	public function delete()
