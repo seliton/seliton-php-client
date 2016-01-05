@@ -2,6 +2,8 @@
 
 namespace Seliton\Client;
 
+use Seliton\Client\Resource\Enum;
+
 class AttributeTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
@@ -21,10 +23,10 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 		$name = 'Test';
 		$unit = 'Unit';
 		$code = 'test';
-		$type = Resource\AttributeType::TEXT;
-		$validator = Resource\AttributeValidator::NONE;
+		$type = Enum\AttributeType::TEXT;
+		$validator = Enum\AttributeValidator::NONE;
 		$isFilterable = true;
-		$filterWidget = Resource\AttributeFilterWidget::TEXT;
+		$filterWidget = Enum\AttributeFilterWidget::TEXT;
 		$filterWidgetShowCounts = true;
 		$filterWidgetHideIrrelevant = true;
 		$filterMoveOutWhenApplied = false;
@@ -90,8 +92,8 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$name = 'Test';
 		$code = 'test';
-		$type = Resource\AttributeType::TEXT;
-		$validator = Resource\AttributeValidator::NONE;
+		$type = Enum\AttributeType::TEXT;
+		$validator = Enum\AttributeValidator::NONE;
 
 		$attribute = $this->_attribute->create(
 			array (
@@ -112,8 +114,8 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$name = 'Test';
 		$code = 'test';
-		$type = Resource\AttributeType::TEXT;
-		$validator = Resource\AttributeValidator::NONE;
+		$type = Enum\AttributeType::TEXT;
+		$validator = Enum\AttributeValidator::NONE;
 
 		$attribute = $this->_attribute->create(
 			array (
@@ -125,7 +127,7 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 		);
 
 		$attributeRetrieved = $this->_attribute->retrieve($attribute->id);
-		$attributeRetrieved->type = Resource\AttributeType::SELECT;
+		$attributeRetrieved->type = Enum\AttributeType::SELECT;
 		$attributeRetrieved->save();
 
 		$attributeSaved = $this->_attribute->retrieve($attributeRetrieved->id);
@@ -139,8 +141,8 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 			array (
 				'attributeName' => array ('en' => 'Test'),
 				'attributeCode' => 'test',
-				'attributeType' => Resource\AttributeType::TEXT,
-				'attributeValidator' => Resource\AttributeValidator::NONE
+				'attributeType' => Enum\AttributeType::TEXT,
+				'attributeValidator' => Enum\AttributeValidator::NONE
 			)
 		);
 
@@ -158,8 +160,8 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 				array (
 					'attributeName' => array ('en' => "Test $i"),
 					'attributeCode' => "test_$i",
-					'attributeType' => Resource\AttributeType::TEXT,
-					'attributeValidator' => Resource\AttributeValidator::NONE,
+					'attributeType' => Enum\AttributeType::TEXT,
+					'attributeValidator' => Enum\AttributeValidator::NONE,
 				)
 			);
 		}

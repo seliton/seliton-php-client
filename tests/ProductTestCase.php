@@ -2,6 +2,8 @@
 
 namespace Seliton\Client;
 
+use Seliton\Client\Resource\Enum;
+
 class ProductTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
@@ -26,7 +28,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$metaDescription = array ('en' => 'Test Meta Description');
 		$brandID = 1;
 		$isActive = true;
-		$availabilityStatus = Resource\ProductAvailabilityStatus::IN_STOCK;
+		$availabilityStatus = Enum\ProductAvailabilityStatus::IN_STOCK;
 		$availabilityLabelID = null;
 		$code = 'test';
 		$barcode = null;
@@ -43,18 +45,18 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$distributorPrice = 300;
 		$weight = 4;
 		$quantity = 6;
-		$bonusPointsMode = Resource\ProductBonusPointsMode::MONEY_ONLY;
+		$bonusPointsMode = Enum\ProductBonusPointsMode::MONEY_ONLY;
 		$bonusPointsPrice = null;
 		$isNew = false;
-		$featuredStyle = Resource\ProductFeaturedStyle::NORMAL;
+		$featuredStyle = Enum\ProductFeaturedStyle::NORMAL;
 		$images = array (
 			array (
 				'productImage' => 'image_1.jpg',
-				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::NORMAL
+				'productImageFeaturedStyle' => Enum\ProductFeaturedStyle::NORMAL
 			),
 			array (
 				'productImage' => 'image_2.jpg',
-				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::DOUBLE_WIDTH
+				'productImageFeaturedStyle' => Enum\ProductFeaturedStyle::DOUBLE_WIDTH
 			),
 		);
 
@@ -171,11 +173,11 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$images = array (
 			array (
 				'productImage' => 'image_1.jpg',
-				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::NORMAL
+				'productImageFeaturedStyle' => Enum\ProductFeaturedStyle::NORMAL
 			),
 			array (
 				'productImage' => 'image_2.jpg',
-				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::NORMAL
+				'productImageFeaturedStyle' => Enum\ProductFeaturedStyle::NORMAL
 			),
 		);
 
@@ -197,11 +199,11 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$productRetrieved->images = array (
 			array (
 				'productImage' => 'updated_image_1.jpg',
-				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::DOUBLE_WIDTH
+				'productImageFeaturedStyle' => Enum\ProductFeaturedStyle::DOUBLE_WIDTH
 			),
 			array (
 				'productImage' => 'updated_image_2.jpg',
-				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::DOUBLE_WIDTH
+				'productImageFeaturedStyle' => Enum\ProductFeaturedStyle::DOUBLE_WIDTH
 			),
 		);
 		$productRetrieved->save();

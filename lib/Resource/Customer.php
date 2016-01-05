@@ -53,10 +53,3 @@ class Customer extends Resource {
 		return parent::convertField($name, $value);
 	}
 }
-
-class CustomerStatus {
-	const DISABLED = 'disabled';
-	const ACTIVE = 'active';
-	const PENDING_APPROVAL = 'pending_approval';
-	const REJECTED = 'rejected';
-}

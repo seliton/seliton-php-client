@@ -3,9 +3,6 @@
 namespace Seliton\Client\Resource;
 
 class Category extends Resource {
-	const STATUS_VISIBLE = 'visible';
-	const STATUS_HIDDEN = 'hidden';
-
 	protected static $_name = 'category';
 	protected static $namePlural = 'categories';
 	protected static $fields = array (

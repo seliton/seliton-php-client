@@ -2,6 +2,8 @@
 
 namespace Seliton\Client;
 
+use Seliton\Client\Resource\Enum;
+
 class CategoryTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
@@ -21,7 +23,7 @@ class CategoryTestCase extends \PHPUnit_Framework_TestCase
 		$parentID = 1;
 		$originalImage = 'original.jpg';
 		$image = 'category.jpg';
-		$status = Resource\Category::STATUS_VISIBLE;
+		$status = Enum\CategoryStatus::VISIBLE;
 		$featured = false;
 		$includeProductsFromSubs = true;
 		$cssClass = 'category';

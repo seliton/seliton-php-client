@@ -66,21 +66,3 @@ class Product extends Resource {
 		return parent::convertField($name, $value);
 	}
 }
-
-class ProductAvailabilityStatus {
-	const OUT_OF_STOCK = 'out_of_stock';
-	const IN_STOCK = 'in_stock';
-}
-
-class ProductBonusPointsMode {
-	const MONEY_ONLY = 'money_only';
-	const POINTS_AND_MONEY = 'points_and_money';
-	const POINTS_ONLY = 'points_only';
-}
-
-class ProductFeaturedStyle {
-	const NORMAL = 'normal';
-	const DOUBLE_WIDTH = 'double_width';
-	const DOUBLE_HEIGHT = 'double_height';
-	const DOUBLE_DOUBLE = 'double_double';
-}

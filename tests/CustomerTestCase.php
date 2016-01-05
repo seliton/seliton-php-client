@@ -2,6 +2,8 @@
 
 namespace Seliton\Client;
 
+use Seliton\Client\Resource\Enum;
+
 class CustomerTestCase extends \PHPUnit_Framework_TestCase
 {
 	protected function setUp()
@@ -20,7 +22,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$email = 'test@example.com';
 		$password = 'password';
-		$status = Resource\CustomerStatus::ACTIVE;
+		$status = Enum\CustomerStatus::ACTIVE;
 		$groupID = 1;
 		$bonusPoints = 0;
 		$referrerID = null;
@@ -82,7 +84,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 	public function testRetrieve()
 	{
 		$email = 'test@example.com';
-		$status = Resource\CustomerStatus::ACTIVE;
+		$status = Enum\CustomerStatus::ACTIVE;
 		$groupID = 1;
 
 		$customer = $this->customer->create(
@@ -102,7 +104,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 	public function testSave()
 	{
 		$email = 'test@example.com';
-		$status = Resource\CustomerStatus::ACTIVE;
+		$status = Enum\CustomerStatus::ACTIVE;
 		$groupID = 1;
 		$addresses = array (
 			array (
@@ -128,7 +130,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 
 		$customerRetrieved = $this->customer->retrieve($customerCreated->id);
 		$customerRetrieved->email = "updated.$email";
-		$customerRetrieved->status = Resource\CustomerStatus::DISABLED;
+		$customerRetrieved->status = Enum\CustomerStatus::DISABLED;
 		$customerRetrieved->addresses = array (
 			array (
 				'customerAddressFirstName' => 'UpdatedFirst1',
@@ -198,7 +200,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 				array (
 					'customerEmail' => "test.$i@example.com",
 					'customerGroupID' => 1,
-					'customerStatus' => Resource\CustomerStatus::ACTIVE,
+					'customerStatus' => Enum\CustomerStatus::ACTIVE,
 				)
 			);
 		}
