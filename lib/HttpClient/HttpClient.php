@@ -2,6 +2,8 @@
 
 namespace Seliton\Client\HttpClient;
 
+use Seliton\Client\HttpClient\Enum\HttpMethod;
+
 class HttpClient {
 	public static function get($url, $params = null)
 	{
@@ -65,11 +67,4 @@ class HttpClient {
 		curl_close($curl);
 		return $result;
 	}
-}
-
-class HttpMethod {
-	const GET = 'GET';
-	const POST = 'POST';
-	const PUT = 'PUT';
-	const DELETE = 'DELETE';
 }
