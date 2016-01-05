@@ -1,6 +1,6 @@
 <?php
 
-namespace Seliton\Client;
+namespace Seliton\Client\HttpClient;
 
 class HttpClient {
 	public static function get($url, $params = null)

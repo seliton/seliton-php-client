@@ -2,7 +2,7 @@
 
 namespace Seliton\Client\Resource;
 
-use Seliton\Client\HttpClient;
+use Seliton\Client\HttpClient\HttpClient;
 
 class Resource {
 	protected static $_name;
