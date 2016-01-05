@@ -1,8 +1,10 @@
 <?php
 
-namespace Seliton\Client;
+namespace Seliton\Client\Tests;
 
-use Seliton\Client\Resource\Enum;
+use
+	Seliton\Client\Seliton,
+	Seliton\Client\Resource\Enum;
 
 class AttributeTestCase extends \PHPUnit_Framework_TestCase
 {

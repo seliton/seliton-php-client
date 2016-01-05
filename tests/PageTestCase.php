@@ -1,6 +1,8 @@
 <?php
 
-namespace Seliton\Client;
+namespace Seliton\Client\Tests;
+
+use Seliton\Client\Seliton;
 
 class PageTestCase extends \PHPUnit_Framework_TestCase
 {
