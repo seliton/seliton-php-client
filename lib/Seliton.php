@@ -2,6 +2,8 @@
 
 namespace Seliton\Client;
 
+use Seliton\Client\Resource;
+
 class Seliton {
 
 	public function __construct($apiUrl)
@@ -11,36 +13,36 @@ class Seliton {
 
 	public function attribute()
 	{
-		return new Attribute($this->apiUrl);
+		return new Resource\Attribute($this->apiUrl);
 	}
 
 	public function brand()
 	{
-		return new Brand($this->apiUrl);
+		return new Resource\Brand($this->apiUrl);
 	}
 
 	public function category()
 	{
-		return new Category($this->apiUrl);
+		return new Resource\Category($this->apiUrl);
 	}
 
 	public function customer()
 	{
-		return new Customer($this->apiUrl);
+		return new Resource\Customer($this->apiUrl);
 	}
 
 	public function order()
 	{
-		return new Order($this->apiUrl);
+		return new Resource\Order($this->apiUrl);
 	}
 
 	public function page()
 	{
-		return new Page($this->apiUrl);
+		return new Resource\Page($this->apiUrl);
 	}
 
 	public function product()
 	{
-		return new Product($this->apiUrl);
+		return new Resource\Product($this->apiUrl);
 	}
 }

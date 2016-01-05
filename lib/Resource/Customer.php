@@ -1,6 +1,6 @@
 <?php
 
-namespace Seliton\Client;
+namespace Seliton\Client\Resource;
 
 class Customer extends Resource {
 	protected static $_name = 'customer';

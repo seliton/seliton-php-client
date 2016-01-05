@@ -26,7 +26,7 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$metaDescription = array ('en' => 'Test Meta Description');
 		$brandID = 1;
 		$isActive = true;
-		$availabilityStatus = ProductAvailabilityStatus::IN_STOCK;
+		$availabilityStatus = Resource\ProductAvailabilityStatus::IN_STOCK;
 		$availabilityLabelID = null;
 		$code = 'test';
 		$barcode = null;
@@ -43,18 +43,18 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$distributorPrice = 300;
 		$weight = 4;
 		$quantity = 6;
-		$bonusPointsMode = ProductBonusPointsMode::MONEY_ONLY;
+		$bonusPointsMode = Resource\ProductBonusPointsMode::MONEY_ONLY;
 		$bonusPointsPrice = null;
 		$isNew = false;
-		$featuredStyle = ProductFeaturedStyle::NORMAL;
+		$featuredStyle = Resource\ProductFeaturedStyle::NORMAL;
 		$images = array (
 			array (
 				'productImage' => 'image_1.jpg',
-				'productImageFeaturedStyle' => ProductFeaturedStyle::NORMAL
+				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::NORMAL
 			),
 			array (
 				'productImage' => 'image_2.jpg',
-				'productImageFeaturedStyle' => ProductFeaturedStyle::DOUBLE_WIDTH
+				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::DOUBLE_WIDTH
 			),
 		);
 
@@ -171,11 +171,11 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$images = array (
 			array (
 				'productImage' => 'image_1.jpg',
-				'productImageFeaturedStyle' => ProductFeaturedStyle::NORMAL
+				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::NORMAL
 			),
 			array (
 				'productImage' => 'image_2.jpg',
-				'productImageFeaturedStyle' => ProductFeaturedStyle::NORMAL
+				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::NORMAL
 			),
 		);
 
@@ -197,11 +197,11 @@ class ProductTestCase extends \PHPUnit_Framework_TestCase
 		$productRetrieved->images = array (
 			array (
 				'productImage' => 'updated_image_1.jpg',
-				'productImageFeaturedStyle' => ProductFeaturedStyle::DOUBLE_WIDTH
+				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::DOUBLE_WIDTH
 			),
 			array (
 				'productImage' => 'updated_image_2.jpg',
-				'productImageFeaturedStyle' => ProductFeaturedStyle::DOUBLE_WIDTH
+				'productImageFeaturedStyle' => Resource\ProductFeaturedStyle::DOUBLE_WIDTH
 			),
 		);
 		$productRetrieved->save();

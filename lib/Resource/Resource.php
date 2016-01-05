@@ -1,6 +1,8 @@
 <?php
 
-namespace Seliton\Client;
+namespace Seliton\Client\Resource;
+
+use Seliton\Client\HttpClient;
 
 class Resource {
 	protected static $_name;
@@ -116,7 +118,7 @@ class Resource {
 
 	protected static function className()
 	{
-		return '\\Seliton\\Client\\'.self::nameFirstUpper();
+		return '\\Seliton\\Client\\Resource\\'.self::nameFirstUpper();
 	}
 
 	protected static function namePlural()

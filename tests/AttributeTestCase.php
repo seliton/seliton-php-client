@@ -21,10 +21,10 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 		$name = 'Test';
 		$unit = 'Unit';
 		$code = 'test';
-		$type = AttributeType::TEXT;
-		$validator = AttributeValidator::NONE;
+		$type = Resource\AttributeType::TEXT;
+		$validator = Resource\AttributeValidator::NONE;
 		$isFilterable = true;
-		$filterWidget = AttributeFilterWidget::TEXT;
+		$filterWidget = Resource\AttributeFilterWidget::TEXT;
 		$filterWidgetShowCounts = true;
 		$filterWidgetHideIrrelevant = true;
 		$filterMoveOutWhenApplied = false;
@@ -90,8 +90,8 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$name = 'Test';
 		$code = 'test';
-		$type = AttributeType::TEXT;
-		$validator = AttributeValidator::NONE;
+		$type = Resource\AttributeType::TEXT;
+		$validator = Resource\AttributeValidator::NONE;
 
 		$attribute = $this->_attribute->create(
 			array (
@@ -112,8 +112,8 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$name = 'Test';
 		$code = 'test';
-		$type = AttributeType::TEXT;
-		$validator = AttributeValidator::NONE;
+		$type = Resource\AttributeType::TEXT;
+		$validator = Resource\AttributeValidator::NONE;
 
 		$attribute = $this->_attribute->create(
 			array (
@@ -125,7 +125,7 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 		);
 
 		$attributeRetrieved = $this->_attribute->retrieve($attribute->id);
-		$attributeRetrieved->type = AttributeType::SELECT;
+		$attributeRetrieved->type = Resource\AttributeType::SELECT;
 		$attributeRetrieved->save();
 
 		$attributeSaved = $this->_attribute->retrieve($attributeRetrieved->id);
@@ -139,8 +139,8 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 			array (
 				'attributeName' => array ('en' => 'Test'),
 				'attributeCode' => 'test',
-				'attributeType' => AttributeType::TEXT,
-				'attributeValidator' => AttributeValidator::NONE
+				'attributeType' => Resource\AttributeType::TEXT,
+				'attributeValidator' => Resource\AttributeValidator::NONE
 			)
 		);
 
@@ -158,8 +158,8 @@ class AttributeTestCase extends \PHPUnit_Framework_TestCase
 				array (
 					'attributeName' => array ('en' => "Test $i"),
 					'attributeCode' => "test_$i",
-					'attributeType' => AttributeType::TEXT,
-					'attributeValidator' => AttributeValidator::NONE,
+					'attributeType' => Resource\AttributeType::TEXT,
+					'attributeValidator' => Resource\AttributeValidator::NONE,
 				)
 			);
 		}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Seliton\Client;
+namespace Seliton\Client\Resource;
 
 class Order extends Resource {
 	protected static $_name = 'order';
@@ -153,7 +153,7 @@ class Order extends Resource {
 					'orderTotalLineAmount' => $totalLine->orderTotalLineAmount,
 					'orderTotalLineCustomerCurrencyAmount' => $totalLine->orderTotalLineCustomerCurrencyAmount,
 					'orderTotalLineSort' => $totalLine->orderTotalLineSort,
-					
+
 				);
 			}
 			return $totalLines;

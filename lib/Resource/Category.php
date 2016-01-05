@@ -1,6 +1,6 @@
 <?php
 
-namespace Seliton\Client;
+namespace Seliton\Client\Resource;
 
 class Category extends Resource {
 	const STATUS_VISIBLE = 'visible';

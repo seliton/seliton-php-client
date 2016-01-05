@@ -20,7 +20,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 	{
 		$email = 'test@example.com';
 		$password = 'password';
-		$status = CustomerStatus::ACTIVE;
+		$status = Resource\CustomerStatus::ACTIVE;
 		$groupID = 1;
 		$bonusPoints = 0;
 		$referrerID = null;
@@ -82,7 +82,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 	public function testRetrieve()
 	{
 		$email = 'test@example.com';
-		$status = CustomerStatus::ACTIVE;
+		$status = Resource\CustomerStatus::ACTIVE;
 		$groupID = 1;
 
 		$customer = $this->customer->create(
@@ -102,7 +102,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 	public function testSave()
 	{
 		$email = 'test@example.com';
-		$status = CustomerStatus::ACTIVE;
+		$status = Resource\CustomerStatus::ACTIVE;
 		$groupID = 1;
 		$addresses = array (
 			array (
@@ -128,7 +128,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 
 		$customerRetrieved = $this->customer->retrieve($customerCreated->id);
 		$customerRetrieved->email = "updated.$email";
-		$customerRetrieved->status = CustomerStatus::DISABLED;
+		$customerRetrieved->status = Resource\CustomerStatus::DISABLED;
 		$customerRetrieved->addresses = array (
 			array (
 				'customerAddressFirstName' => 'UpdatedFirst1',
@@ -198,7 +198,7 @@ class CustomerTestCase extends \PHPUnit_Framework_TestCase
 				array (
 					'customerEmail' => "test.$i@example.com",
 					'customerGroupID' => 1,
-					'customerStatus' => CustomerStatus::ACTIVE,
+					'customerStatus' => Resource\CustomerStatus::ACTIVE,
 				)
 			);
 		}
