@@ -5,44 +5,45 @@ namespace Seliton\Client;
 use Seliton\Client\Resource;
 
 class Seliton {
+	protected static $resources = array (
+		'attribute',
+		'brand',
+		'category',
+		'customer',
+		'order',
+		'page',
+		'product',
+	);
+	protected static $apiUrlForStaticMethods;
+	protected $apiUrl;
 
 	public function __construct($apiUrl)
 	{
 		$this->apiUrl = $apiUrl;
 	}
 
-	public function attribute()
+	public function __call($methodName, $arguments)
 	{
-		return new Resource\Attribute($this->apiUrl);
+		if (in_array($methodName, static::$resources)) {
+			$resourceClassName = 'Seliton\\Client\\Resource\\'.ucfirst($methodName);
+			return new $resourceClassName($this->apiUrl);
+		} else {
+			throw new \Exception("Method '$methodName' not exists");
+		}
 	}
 
-	public function brand()
+	public static function setApiUrl($apiUrl)
 	{
-		return new Resource\Brand($this->apiUrl);
+		static::$apiUrlForStaticMethods = $apiUrl;
 	}
 
-	public function category()
+	public static function __callStatic($methodName, $arguments)
 	{
-		return new Resource\Category($this->apiUrl);
-	}
-
-	public function customer()
-	{
-		return new Resource\Customer($this->apiUrl);
-	}
-
-	public function order()
-	{
-		return new Resource\Order($this->apiUrl);
-	}
-
-	public function page()
-	{
-		return new Resource\Page($this->apiUrl);
-	}
-
-	public function product()
-	{
-		return new Resource\Product($this->apiUrl);
+		if (in_array($methodName, static::$resources)) {
+			$resourceClassName = 'Seliton\\Client\\Resource\\'.ucfirst($methodName);
+			return new $resourceClassName(static::$apiUrlForStaticMethods);
+		} else {
+			throw new \Exception("Method '$methodName' not exists");
+		}
 	}
 }

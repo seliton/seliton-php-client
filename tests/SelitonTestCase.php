@@ -6,6 +6,15 @@ use Seliton\Client\Seliton;
 
 class SelitonTestCase extends \PHPUnit_Framework_TestCase
 {
+	public function testCreateWithStaticMethod()
+	{
+		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+
+		$page = Seliton::page()->create();
+
+		$this->assertNotNull($page->id);
+	}
+
 	public function testFactoryCreate()
 	{
 		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
