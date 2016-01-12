@@ -10,7 +10,7 @@ class PageTestCase extends TestCase
 {
 	protected function setUp()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 		$this->page = $seliton->page();
 	}
 
@@ -103,8 +103,7 @@ class PageTestCase extends TestCase
 	{
 		// Remove existing test pages
 		list ($pagesBefore) = $this->page->all(array (
-			'titleContains' => 'Test',
-			'access_token' => static::getAccessToken()
+			'titleContains' => 'Test'
 		));
 		foreach ($pagesBefore as $pageBefore) {
 			$pageBefore->delete();
@@ -123,8 +122,7 @@ class PageTestCase extends TestCase
 			'titleContains' => 'Test',
 			'limit' => 2,
 			'offset' => 1,
-			'fields' => 'pageId,pageTitle',
-			'access_token' => static::getAccessToken()
+			'fields' => 'pageId,pageTitle'
 		));
 
 		$this->assertEquals(3, $count);

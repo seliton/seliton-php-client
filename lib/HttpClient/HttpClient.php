@@ -37,11 +37,9 @@ class HttpClient {
 
 	protected static function appendUrlEncodedParams($url, $params)
 	{
-		$url .= '?';
-		foreach ($params as $key => $value) {
-			$url .= $key.'='.urldecode($value).'&';
-		}
-		return substr($url, 0, -1);
+		$url .= strpos($url, '?') === false ? '?' : '&';
+		$url .= http_build_query($params);
+		return $url;
 	}
 
 	protected static function curlExec($url, $method, $params)

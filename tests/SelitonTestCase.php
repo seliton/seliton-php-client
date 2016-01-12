@@ -4,11 +4,14 @@ namespace Seliton\Client\Tests;
 
 use Seliton\Client\Seliton;
 
-class SelitonTestCase extends \PHPUnit_Framework_TestCase
+require_once dirname(__FILE__).'/TestCase.php';
+
+class SelitonTestCase extends TestCase
 {
 	public function testCreateWithStaticMethod()
 	{
 		Seliton::setApiUrl('http://dev-1.myseliton.com/api/v1/');
+		Seliton::setAccessToken(static::getAccessToken());
 
 		$page = Seliton::page()->create();
 
@@ -17,7 +20,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactoryCreate()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 
 		$page = $seliton->page()->create();
 
@@ -26,7 +29,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactoryRetrieve()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 
 		$page = $seliton->page()->create();
 		$pageRetrieved = $seliton->page()->retrieve($page->id);
@@ -36,7 +39,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactorySave()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 
 		$page = $seliton->page()->create();
 		$pageRetrieved = $seliton->page()->retrieve($page->id);
@@ -50,7 +53,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactoryDelete()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 
 		$page = $seliton->page()->create();
 
@@ -63,7 +66,7 @@ class SelitonTestCase extends \PHPUnit_Framework_TestCase
 
 	public function testFactoryAll()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 
 		// Remove existing test pages
 		list ($pagesBefore) = $seliton->page()->all(

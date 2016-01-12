@@ -15,18 +15,21 @@ class Seliton {
 		'product',
 	);
 	protected static $apiUrlForStaticMethods;
+	protected static $accessTokenForStaticMethods;
 	protected $apiUrl;
+	protected $accessToken;
 
-	public function __construct($apiUrl)
+	public function __construct($apiUrl, $accessToken = null)
 	{
 		$this->apiUrl = $apiUrl;
+		$this->accessToken = $accessToken;
 	}
 
 	public function __call($methodName, $arguments)
 	{
 		if (in_array($methodName, static::$resources)) {
 			$resourceClassName = 'Seliton\\Client\\Resource\\'.ucfirst($methodName);
-			return new $resourceClassName($this->apiUrl);
+			return new $resourceClassName($this->apiUrl, $this->accessToken);
 		} else {
 			throw new \Exception("Method '$methodName' not exists");
 		}
@@ -37,11 +40,19 @@ class Seliton {
 		static::$apiUrlForStaticMethods = $apiUrl;
 	}
 
+	public static function setAccessToken($accessToken)
+	{
+		static::$accessTokenForStaticMethods = $accessToken;
+	}
+
 	public static function __callStatic($methodName, $arguments)
 	{
 		if (in_array($methodName, static::$resources)) {
 			$resourceClassName = 'Seliton\\Client\\Resource\\'.ucfirst($methodName);
-			return new $resourceClassName(static::$apiUrlForStaticMethods);
+			return new $resourceClassName(
+				static::$apiUrlForStaticMethods,
+				static::$accessTokenForStaticMethods
+			);
 		} else {
 			throw new \Exception("Method '$methodName' not exists");
 		}

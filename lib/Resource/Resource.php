@@ -12,10 +12,12 @@ class Resource {
 	protected static $fieldsToRest = array ();
 
 	protected $apiUrl = null;
+	protected $accessToken;
 
-	public function __construct($apiUrl)
+	public function __construct($apiUrl, $accessToken)
 	{
 		$this->apiUrl = $apiUrl;
+		$this->accessToken = $accessToken;
 	}
 
 	protected function setFieldsFromJsonDecoded($jsonDecoded)
@@ -50,7 +52,7 @@ class Resource {
 		$jsonDecoded = HttpClient::post($this->apiUrl(), json_encode($params));
 
 		$resourceClassName = self::className();
-		$resource = new $resourceClassName($this->apiUrl);
+		$resource = new $resourceClassName($this->apiUrl, $this->accessToken);
 		$resource->setFieldsFromJsonDecoded($jsonDecoded);
 		return $resource;
 	}
@@ -62,7 +64,7 @@ class Resource {
 		$resourceName = self::name();
 		if (isset($jsonDecoded->$resourceName)) {
 			$resourceClassName = self::className();
-			$resource = new $resourceClassName($this->apiUrl);
+			$resource = new $resourceClassName($this->apiUrl, $this->accessToken);
 			$resource->setFieldsFromJsonDecoded($jsonDecoded->$resourceName);
 		} else {
 			throw new \Exception($jsonDecoded->error->message);
@@ -78,7 +80,7 @@ class Resource {
 			$resources = array ();
 			foreach ($jsonDecoded->$namePlural as $resourceJsonDecoded) {
 				$resourceClassName = self::className();
-				$resource = new $resourceClassName($this->apiUrl);
+				$resource = new $resourceClassName($this->apiUrl, $this->accessToken);
 				$resource->setFieldsFromJsonDecoded($resourceJsonDecoded);
 				$resources[] = $resource;
 			}
@@ -103,7 +105,7 @@ class Resource {
 
 	protected function apiUrl($path = '')
 	{
-		return $this->apiUrl.self::namePlural()."/$path";
+		return $this->apiUrl.self::namePlural()."/$path?access_token={$this->accessToken}";
 	}
 
 	protected static function name()

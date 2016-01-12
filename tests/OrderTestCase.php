@@ -10,7 +10,7 @@ class OrderTestCase extends TestCase
 {
 	protected function setUp()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 		$this->order = $seliton->order();
 	}
 
@@ -31,8 +31,7 @@ class OrderTestCase extends TestCase
 		list ($orders, $count) = $this->order->all(array (
 			'limit' => 2,
 			'offset' => 1,
-			'fields' => 'orderId,orderPaymentModuleName',
-			'access_token' => $this->getAccessToken()
+			'fields' => 'orderId,orderPaymentModuleName'
 		));
 
 		$this->assertEquals(286, $count);
