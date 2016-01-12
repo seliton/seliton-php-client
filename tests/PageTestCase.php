@@ -4,7 +4,9 @@ namespace Seliton\Client\Tests;
 
 use Seliton\Client\Seliton;
 
-class PageTestCase extends \PHPUnit_Framework_TestCase
+require_once dirname(__FILE__).'/TestCase.php';
+
+class PageTestCase extends TestCase
 {
 	protected function setUp()
 	{
@@ -100,7 +102,10 @@ class PageTestCase extends \PHPUnit_Framework_TestCase
 	public function testAll()
 	{
 		// Remove existing test pages
-		list ($pagesBefore) = $this->page->all(array ('titleContains' => 'Test'));
+		list ($pagesBefore) = $this->page->all(array (
+			'titleContains' => 'Test',
+			'access_token' => static::getAccessToken()
+		));
 		foreach ($pagesBefore as $pageBefore) {
 			$pageBefore->delete();
 		}
@@ -118,7 +123,8 @@ class PageTestCase extends \PHPUnit_Framework_TestCase
 			'titleContains' => 'Test',
 			'limit' => 2,
 			'offset' => 1,
-			'fields' => 'pageId,pageTitle'
+			'fields' => 'pageId,pageTitle',
+			'access_token' => static::getAccessToken()
 		));
 
 		$this->assertEquals(3, $count);
