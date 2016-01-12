@@ -6,11 +6,13 @@ use
 	Seliton\Client\Seliton,
 	Seliton\Client\Resource\Enum;
 
-class AttributeTestCase extends \PHPUnit_Framework_TestCase
+require_once dirname(__FILE__).'/TestCase.php';
+
+class AttributeTestCase extends TestCase
 {
 	protected function setUp()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 		$this->_attribute = $seliton->attribute();
 
 		// Remove existing test attributes

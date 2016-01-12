@@ -6,11 +6,13 @@ use
 	Seliton\Client\Seliton,
 	Seliton\Client\Resource\Enum;
 
-class CustomerTestCase extends \PHPUnit_Framework_TestCase
+require_once dirname(__FILE__).'/TestCase.php';
+
+class CustomerTestCase extends TestCase
 {
 	protected function setUp()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 		$this->customer = $seliton->customer();
 
 		// Remove existing test customers

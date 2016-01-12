@@ -6,11 +6,13 @@ use
 	Seliton\Client\Seliton,
 	Seliton\Client\Resource\Enum;
 
-class CategoryTestCase extends \PHPUnit_Framework_TestCase
+require_once dirname(__FILE__).'/TestCase.php';
+
+class CategoryTestCase extends TestCase
 {
 	protected function setUp()
 	{
-		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/');
+		$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
 		$this->category = $seliton->category();
 	}
 
