@@ -4,7 +4,9 @@ namespace Seliton\Client\Tests;
 
 use Seliton\Client\Seliton;
 
-class OrderTestCase extends \PHPUnit_Framework_TestCase
+require_once dirname(__FILE__).'/TestCase.php';
+
+class OrderTestCase extends TestCase
 {
 	protected function setUp()
 	{
@@ -29,7 +31,8 @@ class OrderTestCase extends \PHPUnit_Framework_TestCase
 		list ($orders, $count) = $this->order->all(array (
 			'limit' => 2,
 			'offset' => 1,
-			'fields' => 'orderId,orderPaymentModuleName'
+			'fields' => 'orderId,orderPaymentModuleName',
+			'access_token' => $this->getAccessToken()
 		));
 
 		$this->assertEquals(286, $count);
