@@ -24,15 +24,16 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 				'read_products',
 				'write_products',
 			);
-			$tokenUrl = 'http://partners.dev/authorize?client_id=testclient&response_type=code' .
+			$tokenUrl = 'http://seliton-partners.dev/authorize?client_id=testclient&response_type=code' .
 				'&state=xyz&shop=dev-1.myseliton.com&scope=' . implode('%20', $scopes);
 			$curl = curl_init($tokenUrl);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, array('authorized' => 'Accept'));
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_exec($curl);
 			$info = curl_getinfo($curl);
 			static::$accessToken = substr(
 				$info['redirect_url'],
-				strlen('http://partners.dev/app?access_token=')
+				strlen('http://seliton-partners.dev/app?access_token=')
 			);
 		}
 
