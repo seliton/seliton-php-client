@@ -33,7 +33,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 			$info = curl_getinfo($curl);
 			static::$accessToken = substr(
 				$info['redirect_url'],
-				strlen('http://seliton-partners.dev/app?access_token=')
+				strlen('http://seliton-partners.dev/recent-orders-app?access_token=')
 			);
 		}
 
