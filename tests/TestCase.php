@@ -31,10 +31,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 			));
 			$env = $loader->parse()->toArray();
 
-			$tokenUrl = $env['SELITON_PARTNERS_URL'].'/authorize?client_id=testclient&response_type=code'.
+			$authorizeUrl = $env['SELITON_PARTNERS_URL'].'/authorize?client_id=testclient&response_type=code'.
 				'&state=xyz&shop=dev-1.myseliton.com&scope='.implode('%20', $scopes);
-			$curl = curl_init($tokenUrl);
-			curl_setopt($curl, CURLOPT_POSTFIELDS, array('authorized' => 'Accept'));
+			$curl = curl_init($authorizeUrl);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, array ('authorized' => 'Accept'));
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_exec($curl);
 			$info = curl_getinfo($curl);
@@ -44,17 +44,14 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 				40
 			);
 
-			$client = new \Guzzle\Http\Client($env['SELITON_PARTNERS_URL']);
-			$guzzleRequest = $client->post(
-				$env['SELITON_PARTNERS_URL'].'/token',
-				null,
-				array (
-					'grant_type' => 'authorization_code',
-					'code' => $code
-				)
-			)->setAuth('testclient', 'testpass');
-			$response = $guzzleRequest->send();
-			$responseBody = $response->getBody(true);
+			$curl = curl_init($env['SELITON_PARTNERS_URL'].'/token');
+			curl_setopt($curl, CURLOPT_POSTFIELDS, array (
+				'grant_type' => 'authorization_code',
+				'code' => $code
+			));
+			curl_setopt($curl, CURLOPT_USERPWD, 'testclient:testpass');
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			$responseBody = curl_exec($curl);
 			$responseJsonDecoded = json_decode($responseBody);
 			static::$accessToken = $responseJsonDecoded->access_token;
 		}

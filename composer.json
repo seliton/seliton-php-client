@@ -9,8 +9,7 @@
   },
   "require-dev": {
       "phpunit/phpunit": "*",
-      "josegonzalez/dotenv": "dev-master",
-      "guzzle/guzzle": "3.*"
+      "josegonzalez/dotenv": "dev-master"
   },
   "autoload": {
       "psr-4": {
