@@ -24,7 +24,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 				'read_products',
 				'write_products',
 			);
-			$tokenUrl = 'http://seliton-partners.dev/authorize?client_id=testclient&response_type=code' .
+			$tokenUrl = 'http://dev.seliton.com/authorize?client_id=testclient&response_type=code' .
 				'&state=xyz&shop=dev-1.myseliton.com&scope=' . implode('%20', $scopes);
 			$curl = curl_init($tokenUrl);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, array('authorized' => 'Accept'));
@@ -33,7 +33,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 			$info = curl_getinfo($curl);
 			static::$accessToken = substr(
 				$info['redirect_url'],
-				strlen('http://seliton-partners.dev/recent-orders-app?access_token=')
+				strlen('http://dev.seliton.com/recent-orders-app?access_token=')
 			);
 		}
 
