@@ -5,9 +5,12 @@
   "keywords": ["seliton", "api", "client"],
   "homepage": "https://github.com/seliton/seliton-php-client",
   "license": "MIT",
-  "require": {},
+  "require": {
+  },
   "require-dev": {
-      "phpunit/phpunit": "*"
+      "phpunit/phpunit": "*",
+      "josegonzalez/dotenv": "dev-master",
+      "guzzle/guzzle": "3.*"
   },
   "autoload": {
       "psr-4": {
