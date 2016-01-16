@@ -1,5 +1,10 @@
 {
-  "name": "seliton/client",
+  "name": "seliton/seliton-php-client",
+  "type": "library",
+  "description": "PHP Client for Seliton REST API",
+  "keywords": ["seliton", "api", "client"],
+  "homepage": "https://github.com/seliton/seliton-php-client",
+  "license": "MIT",
   "require": {},
   "require-dev": {
       "phpunit/phpunit": "*"
