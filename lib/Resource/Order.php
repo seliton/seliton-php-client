@@ -10,7 +10,7 @@ class Order extends Resource {
 		'invoiceNumber',
 		'invoicePreparedBy',
 		'invoiceDate',
-		'timestamp',
+		'createdAt',
 		'iPAddress',
 		'isDirectPayment',
 		'status',
