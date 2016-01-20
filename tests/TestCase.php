@@ -23,6 +23,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 				'write_pages',
 				'read_products',
 				'write_products',
+				'read_scriptCodes',
+				'write_scriptCodes',
 			);
 
 			$loader = new \josegonzalez\Dotenv\Loader(array (

@@ -13,6 +13,7 @@ class Seliton {
 		'order',
 		'page',
 		'product',
+		'scriptCode',
 	);
 	protected static $apiUrlForStaticMethods;
 	protected static $accessTokenForStaticMethods;
