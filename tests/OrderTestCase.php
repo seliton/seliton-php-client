@@ -31,10 +31,11 @@ class OrderTestCase extends TestCase
 		list ($orders, $count) = $this->order->all(array (
 			'limit' => 2,
 			'offset' => 1,
-			'fields' => 'orderId,orderPaymentModuleName'
+			'fields' => 'orderId,orderPaymentModuleName',
+			'order' => 'orderId:asc'
 		));
 
-		$this->assertEquals(286, $count);
+		$this->assertEquals(284, $count);
 		$this->assertEquals(2, count($orders));
 
 		for ($j = 0; $j < 2; $j++) {
