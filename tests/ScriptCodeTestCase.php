@@ -85,6 +85,61 @@
 			$this->assertEquals($scriptCodeRetrieved->name, $scriptCodeSaved->name);
 		}
 		
+		/**
+		 * Test other App's Script Code update fails
+		 * 
+		 * API should return error 401, if you are trying to update other App's Script Code. 
+		 * 
+		 * @throws \Exception
+		 */
+		public function testUpdateOtherAppFails()
+		{
+			$text = 'test';
+			$name = 'Test';
+			$scriptCodeOtherApp = $this->scriptCode->create(
+				array (
+					'scriptCodeText' => $text,
+					'scriptCodeName' => $name,
+					'scriptCodeAppID' => 'other-app-id'
+				)
+			);
+			
+			$scriptCodeRetrieved = $this->scriptCode->retrieve($scriptCodeOtherApp->id);
+			$scriptCodeRetrieved->text = "updated $text";
+			$scriptCodeRetrieved->name = "updated $name";
+			
+			$this->setExpectedException('Exception');
+			$scriptCodeRetrieved->save();
+		}
+		
+		/**
+		 * Test Script Code update by the same App it was created
+		 * 
+		 * @throws \Exception
+		 */
+		public function testUpdateSameApp()
+		{
+			$text = 'test';
+			$name = 'Test';
+			$scriptCode = $this->scriptCode->create(
+				array (
+					'scriptCodeText' => $text,
+					'scriptCodeName' => $name,
+					'scriptCodeAppID' => 'testclient',
+				)
+			);
+			
+			$scriptCodeRetrieved = $this->scriptCode->retrieve($scriptCode->id);
+			$scriptCodeRetrieved->text = "updated $text";
+			$scriptCodeRetrieved->name = "updated $name";
+			$scriptCodeRetrieved->save();
+			
+			$scriptCodeSaved = $this->scriptCode->retrieve($scriptCodeRetrieved->id);
+			
+			$this->assertEquals($scriptCodeRetrieved->text, $scriptCodeSaved->text);
+			$this->assertEquals($scriptCodeRetrieved->name, $scriptCodeSaved->name);
+		}
+		
 		public function testDelete()
 		{
 			$scriptCode = $this->scriptCode->create(

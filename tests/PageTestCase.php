@@ -5,12 +5,18 @@
 	
 	namespace Seliton\Client\Tests;
 	
+	use Seliton\Client\Resource\Page;
 	use Seliton\Client\Seliton;
 	
 	require_once dirname(__FILE__).'/TestCase.php';
 	
 	class PageTestCase extends TestCase
 	{
+		/**
+		 * @var Page
+		 */
+		protected $page;
+		
 		protected function setUp()
 		{
 			$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());

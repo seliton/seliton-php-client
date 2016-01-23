@@ -105,12 +105,16 @@
 		public function save()
 		{
 			$apiUrl = $this->apiUrl($this->id);
-			HttpClient::put($apiUrl, $this->toJson());
+			$jsonDecoded = HttpClient::put($apiUrl, $this->toJson());
+			if (isset($jsonDecoded->error)) {
+				throw new \Exception($jsonDecoded->error->message);
+			}
 		}
 		
 		/**
 		 * Update Resource
 		 * 
+		 * @throws \Exception
 		 * @param $fields array Resource fields (name => value) to be updated
 		 * @return Resource
 		 */
@@ -118,6 +122,9 @@
 		{
 			$apiUrl = $this->apiUrl($fields[static::field('Id')]);
 			$jsonDecoded = HttpClient::put($apiUrl, json_encode($fields));
+			if (isset($jsonDecoded->error)) {
+				throw new \Exception($jsonDecoded->error->message);
+			}
 			$resourceClassName = self::className();
 			/** @var $resource \Seliton\Client\Resource\Resource */
 			$resource = new $resourceClassName($this->apiUrl, $this->accessToken);
