@@ -7,6 +7,20 @@
 	
 	use Seliton\Client\Resource;
 	
+	/**
+	 * Seliton class
+	 * 
+	 * @method static Resource\Attribute attribute() Attribute resource
+	 * @method static Resource\Brand brand() Brand resource
+	 * @method static Resource\Category category() Category resource
+	 * @method static Resource\Customer customer() Customer resource
+	 * @method static Resource\Order order() Order resource
+	 * @method static Resource\Page page() Page resource
+	 * @method static Resource\Product product() Product resource
+	 * @method static Resource\ScriptCode scriptCode() Script Code resource
+	 * 
+	 * @package Seliton\Client
+	 */
 	class Seliton {
 		protected static $resources = array (
 			'attribute',
