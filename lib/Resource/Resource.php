@@ -14,6 +14,11 @@
 		protected static $externalFields = array ();
 		protected static $fieldsToRest = array ();
 		
+		/**
+		 * @var integer Resource ID
+		 */
+		public $id;
+		
 		protected $apiUrl = null;
 		protected $accessToken;
 		
@@ -55,6 +60,7 @@
 			$jsonDecoded = HttpClient::post($this->apiUrl(), json_encode($params));
 			
 			$resourceClassName = self::className();
+			/** @var $resource \Seliton\Client\Resource\Resource */
 			$resource = new $resourceClassName($this->apiUrl, $this->accessToken);
 			$resource->setFieldsFromJsonDecoded($jsonDecoded);
 			return $resource;
@@ -67,6 +73,7 @@
 			$resourceName = self::name();
 			if (isset($jsonDecoded->$resourceName)) {
 				$resourceClassName = self::className();
+				/** @var $resource \Seliton\Client\Resource\Resource */
 				$resource = new $resourceClassName($this->apiUrl, $this->accessToken);
 				$resource->setFieldsFromJsonDecoded($jsonDecoded->$resourceName);
 			} else {
@@ -83,6 +90,7 @@
 				$resources = array ();
 				foreach ($jsonDecoded->$namePlural as $resourceJsonDecoded) {
 					$resourceClassName = self::className();
+					/** @var $resource \Seliton\Client\Resource\Resource */
 					$resource = new $resourceClassName($this->apiUrl, $this->accessToken);
 					$resource->setFieldsFromJsonDecoded($resourceJsonDecoded);
 					$resources[] = $resource;
@@ -98,6 +106,23 @@
 		{
 			$apiUrl = $this->apiUrl($this->id);
 			HttpClient::put($apiUrl, $this->toJson());
+		}
+		
+		/**
+		 * Update Resource
+		 * 
+		 * @param $fields array Resource fields (name => value) to be updated
+		 * @return Resource
+		 */
+		public function update($fields)
+		{
+			$apiUrl = $this->apiUrl($fields[static::field('Id')]);
+			$jsonDecoded = HttpClient::put($apiUrl, json_encode($fields));
+			$resourceClassName = self::className();
+			/** @var $resource \Seliton\Client\Resource\Resource */
+			$resource = new $resourceClassName($this->apiUrl, $this->accessToken);
+			$resource->setFieldsFromJsonDecoded($jsonDecoded->page);
+			return $resource;
 		}
 		
 		public function delete()

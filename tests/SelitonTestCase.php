@@ -54,6 +54,21 @@
 			$this->assertEquals($pageRetrieved->cssClass, $pageSaved->cssClass);
 		}
 		
+		public function testFactoryUpdate()
+		{
+			$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
+			
+			$page = $seliton->page()->create();
+			
+			$cssClassUpdated = 'updated-page';
+			$pageUpdated = $seliton->page()->update(array (
+				'pageId' => $page->id,
+				'pageCssClass' => $cssClassUpdated,
+			));
+			
+			$this->assertEquals($cssClassUpdated, $pageUpdated->cssClass);
+		}
+		
 		public function testFactoryDelete()
 		{
 			$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());

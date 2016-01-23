@@ -20,7 +20,7 @@
 		
 		public static function put($url, $json)
 		{
-			self::request($url, HttpMethod::PUT, $json);
+			return self::request($url, HttpMethod::PUT, $json);
 		}
 		
 		public static function delete($url)
