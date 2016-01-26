@@ -128,7 +128,8 @@
 			$resourceClassName = self::className();
 			/** @var $resource \Seliton\Client\Resource\Resource */
 			$resource = new $resourceClassName($this->apiUrl, $this->accessToken);
-			$resource->setFieldsFromJsonDecoded($jsonDecoded->page);
+			$resourceName = static::$_name;
+			$resource->setFieldsFromJsonDecoded($jsonDecoded->$resourceName);
 			return $resource;
 		}
 		
