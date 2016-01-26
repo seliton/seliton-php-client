@@ -7,12 +7,18 @@
 	
 	use
 		Seliton\Client\Seliton,
+		Seliton\Client\Resource,
 		Seliton\Client\Resource\Enum;
 	
 	require_once dirname(__FILE__).'/TestCase.php';
 	
 	class CustomerTestCase extends TestCase
 	{
+		/**
+		 * @var Resource\Customer
+		 */
+		protected $customer;
+		
 		protected function setUp()
 		{
 			$seliton = new Seliton('http://dev-1.myseliton.com/api/v1/', static::getAccessToken());
@@ -31,7 +37,6 @@
 			$password = 'password';
 			$status = Enum\CustomerStatus::ACTIVE;
 			$groupID = 1;
-			$bonusPoints = 0;
 			$referrerID = null;
 			$addresses = array (
 				array (
@@ -54,7 +59,6 @@
 					'customerPassword' => $password,
 					'customerStatus' => $status,
 					'customerGroupID' => $groupID,
-					'customerBonusPoints' => $bonusPoints,
 					'customerReferrerID' => $referrerID,
 					'customerAddresses' => $addresses,
 				)
@@ -64,7 +68,7 @@
 			$this->assertEquals($email, $customer->email);
 			$this->assertEquals($status, $customer->status);
 			$this->assertEquals($groupID, $customer->groupID);
-			$this->assertEquals($bonusPoints, $customer->bonusPoints);
+			$this->assertEquals(0, $customer->bonusPoints);
 			$this->assertEquals($referrerID, $customer->referrerID);
 			
 			for ($i = 0; $i < count($addresses); $i++) {
