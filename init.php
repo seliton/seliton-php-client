@@ -14,6 +14,12 @@
 	require_once dirname(__FILE__).'/lib/Resource/Order.php';
 	require_once dirname(__FILE__).'/lib/Resource/Page.php';
 	require_once dirname(__FILE__).'/lib/Resource/Product.php';
+	require_once dirname(__FILE__).'/lib/Resource/ScriptCode.php';
+	
+	require_once dirname(__FILE__).'/lib/Resource/Enum/AttributeType.php';
+	require_once dirname(__FILE__).'/lib/Resource/Enum/AttributeValidator.php';
+	require_once dirname(__FILE__).'/lib/Resource/Enum/CustomerStatus.php';
+	require_once dirname(__FILE__).'/lib/Resource/Enum/ScriptCodePosition.php';
 	
 	require_once dirname(__FILE__).'/lib/HttpClient/HttpClient.php';
 	require_once dirname(__FILE__).'/lib/HttpClient/Enum/HttpMethod.php';
