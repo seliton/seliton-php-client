@@ -12,7 +12,7 @@
 		protected static $namePlural;
 		protected static $fields;
 		protected static $externalFields = array ();
-		protected static $fieldsToRest = array ();
+		protected static $fieldsToApi = array ();
 		
 		/**
 		 * @var integer Resource ID
@@ -22,16 +22,27 @@
 		protected $apiUrl = null;
 		protected $accessToken;
 		
+		/**
+		 * Resource constructor
+		 * 
+		 * @param string $apiUrl Base API URL
+		 * @param string $accessToken JSON Web Token
+		 */
 		public function __construct($apiUrl, $accessToken)
 		{
 			$this->apiUrl = $apiUrl;
 			$this->accessToken = $accessToken;
 		}
 		
+		/**
+		 * Set Resource fields from JSON decoded
+		 * 
+		 * @param mixed $jsonDecoded JSON decoded
+		 */
 		protected function setFieldsFromJsonDecoded($jsonDecoded)
 		{
-			foreach (self::fields() as $field) {
-				$paramsField = self::field($field);
+			foreach (static::$fields as $field) {
+				$paramsField = self::fieldForApi($field);
 				if (property_exists($jsonDecoded, $paramsField)) {
 					$this->$field = $this->convertField($field, $jsonDecoded->$paramsField);
 				}
@@ -43,21 +54,32 @@
 			}
 		}
 		
-		public function toJson()
+		/**
+		 * Resource array representation
+		 * 
+		 * @return array
+		 */
+		public function toArray()
 		{
 			$result = array ();
-			foreach (self::fields() as $field) {
-				$apiField = self::field($field);
+			foreach (static::$fields as $field) {
+				$apiField = self::fieldForApi($field);
 				if (isset($this->$field)) {
 					$result[$apiField] = $this->$field;
 				}
 			}
-			return json_encode($result);
+			return $result;
 		}
 		
+		/**
+		 * Create Resource via API
+		 * 
+		 * @param array $params POST parameters
+		 * @return Resource
+		 */
 		public function create($params = array ())
 		{
-			$jsonDecoded = HttpClient::post($this->apiUrl(), json_encode($params));
+			$jsonDecoded = HttpClient::post($this->apiUrl(), $params);
 			
 			$resourceClassName = self::className();
 			/** @var $resource \Seliton\Client\Resource\Resource */
@@ -66,11 +88,18 @@
 			return $resource;
 		}
 		
+		/**
+		 * Retrieve Resource via API
+		 * 
+		 * @param int $id Resource ID
+		 * @return Resource
+		 * @throws \Exception On API error
+		 */
 		public function retrieve($id)
 		{
 			$jsonDecoded = HttpClient::get($this->apiUrl($id));
 			
-			$resourceName = self::name();
+			$resourceName = static::$_name;
 			if (isset($jsonDecoded->$resourceName)) {
 				$resourceClassName = self::className();
 				/** @var $resource \Seliton\Client\Resource\Resource */
@@ -82,10 +111,17 @@
 			return $resource;
 		}
 		
-		public function all($params = null)
+		/**
+		 * Retrieve Resources via API
+		 * 
+		 * @param array $params GET parameters
+		 * @return array Resources and Resources count tuple
+		 * @throws \Exception On API error
+		 */
+		public function all($params = array ())
 		{
 			$jsonDecoded = HttpClient::get($this->apiUrl(), $params);
-			$namePlural = self::namePlural();
+			$namePlural = static::$namePlural;
 			if (isset($jsonDecoded->$namePlural)) {
 				$resources = array ();
 				foreach ($jsonDecoded->$namePlural as $resourceJsonDecoded) {
@@ -102,26 +138,31 @@
 			return array ($resources, $resourcesCount);
 		}
 		
+		/**
+		 * Save Resource via API
+		 * 
+		 * @throws \Exception On API error
+		 */
 		public function save()
 		{
 			$apiUrl = $this->apiUrl($this->id);
-			$jsonDecoded = HttpClient::put($apiUrl, $this->toJson());
+			$jsonDecoded = HttpClient::put($apiUrl, $this->toArray());
 			if (isset($jsonDecoded->error)) {
 				throw new \Exception($jsonDecoded->error->message);
 			}
 		}
 		
 		/**
-		 * Update Resource
+		 * Update Resource via API
 		 * 
-		 * @throws \Exception
+		 * @throws \Exception On API error
 		 * @param $fields array Resource fields (name => value) to be updated
 		 * @return Resource
 		 */
 		public function update($fields)
 		{
-			$apiUrl = $this->apiUrl($fields[static::field('Id')]);
-			$jsonDecoded = HttpClient::put($apiUrl, json_encode($fields));
+			$apiUrl = $this->apiUrl($fields[static::fieldForApi('Id')]);
+			$jsonDecoded = HttpClient::put($apiUrl, $fields);
 			if (isset($jsonDecoded->error)) {
 				throw new \Exception($jsonDecoded->error->message);
 			}
@@ -133,51 +174,68 @@
 			return $resource;
 		}
 		
+		/**
+		 * Delete Resource via API
+		 */
 		public function delete()
 		{
 			$apiUrl = $this->apiUrl($this->id);
 			HttpClient::delete($apiUrl);
 		}
 		
+		/**
+		 * API Url for given path
+		 * 
+		 * @param string $path
+		 * @return string
+		 */
 		protected function apiUrl($path = '')
 		{
-			return $this->apiUrl.self::namePlural()."/$path?access_token={$this->accessToken}";
+			return $this->apiUrl.static::$namePlural."/$path?access_token={$this->accessToken}";
 		}
 		
-		protected static function name()
-		{
-			return static::$_name;
-		}
-		
+		/**
+		 * Resource name with first letter uppercase
+		 * 
+		 * @return string
+		 */
 		protected static function nameFirstUpper()
 		{
-			return ucfirst(self::name());
+			return ucfirst(static::$_name);
 		}
 		
+		/**
+		 * Resource full class name (with namespace)
+		 * 
+		 * @return string
+		 */
 		protected static function className()
 		{
 			return '\\Seliton\\Client\\Resource\\'.self::nameFirstUpper();
 		}
 		
-		protected static function namePlural()
+		/**
+		 * Field name for API
+		 * 
+		 * @param string $name Field name
+		 * @return string
+		 */
+		protected static function fieldForApi($name)
 		{
-			return static::$namePlural;
-		}
-		
-		protected static function fields()
-		{
-			return static::$fields;
-		}
-		
-		protected static function field($name)
-		{
-			if (isset(static::$fieldsToRest[$name])) {
-				return self::name().static::$fieldsToRest[$name];
+			if (isset(static::$fieldsToApi[$name])) {
+				return static::$_name.static::$fieldsToApi[$name];
 			}
 			
-			return self::name().ucfirst($name);
+			return static::$_name.ucfirst($name);
 		}
 		
+		/**
+		 * Convert Resource's custom fields values (if overridden)
+		 * 
+		 * @param string $name Field name
+		 * @param mixed $value Field value
+		 * @return mixed Converted value
+		 */
 		protected function convertField($name, $value)
 		{
 			return $value;

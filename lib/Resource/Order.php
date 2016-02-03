@@ -98,6 +98,13 @@
 			'checkoutModuleID',
 		);
 		
+		/**
+		 * Convert Order custom values
+		 *
+		 * @param string $name Field name
+		 * @param mixed $value Field value
+		 * @return mixed Converted value
+		 */
 		protected function convertField($name, $value)
 		{
 			if ($name == 'items') {

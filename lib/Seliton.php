@@ -37,12 +37,26 @@
 		protected $apiUrl;
 		protected $accessToken;
 		
-		public function __construct($apiUrl, $accessToken = null)
+		/**
+		 * Seliton constructor
+		 * 
+		 * @param $apiUrl Base API URL
+		 * @param string $accessToken JSON Web Token
+		 */
+		public function __construct($apiUrl, $accessToken)
 		{
 			$this->apiUrl = $apiUrl;
 			$this->accessToken = $accessToken;
 		}
 		
+		/**
+		 * Non-static magic methods for available Resources
+		 * 
+		 * @param string $methodName
+		 * @param array $arguments
+		 * @return mixed
+		 * @throws \Exception
+		 */
 		public function __call($methodName, $arguments)
 		{
 			if (in_array($methodName, static::$resources)) {
@@ -53,16 +67,34 @@
 			}
 		}
 		
+		/**
+		 * Set base API URL globally
+		 * 
+		 * @param string $apiUrl 
+		 */
 		public static function setApiUrl($apiUrl)
 		{
 			static::$apiUrlForStaticMethods = $apiUrl;
 		}
 		
+		/**
+		 * Set JSON Web Token globally
+		 * 
+		 * @param string $accessToken
+		 */
 		public static function setAccessToken($accessToken)
 		{
 			static::$accessTokenForStaticMethods = $accessToken;
 		}
 		
+		/**
+		 * Static magic methods for available Resources
+		 * 
+		 * @param string $methodName
+		 * @param array $arguments
+		 * @return mixed
+		 * @throws \Exception
+		 */
 		public static function __callStatic($methodName, $arguments)
 		{
 			if (in_array($methodName, static::$resources)) {

@@ -36,7 +36,7 @@
 			'iconImageHeight',
 			'sort',
 		);
-		protected static $fieldsToRest = array (
+		protected static $fieldsToApi = array (
 			'seoTitle' => 'SEOTitle',
 			'seoKeywords' => 'SEOKeywords',
 			'seoDescription' => 'SEODescription',
