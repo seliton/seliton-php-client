@@ -32,7 +32,7 @@ print_r($page);
 
 ## Documentation
 
-Please see http://dev-1.myseliton.com/docs/api/ for up-to-date documentation.
+Please see http://dev.seliton.com/api/docs/ for up-to-date documentation.
 
 ## Development
 
